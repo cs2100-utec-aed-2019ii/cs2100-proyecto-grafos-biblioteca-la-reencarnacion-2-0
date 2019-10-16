@@ -5,9 +5,12 @@
 #ifndef UNTITLED26_NODE_H
 #define UNTITLED26_NODE_H
 
+#include "Coordenadas.h"
+
 class Node {
 public:
-    Node(){}
+    Coordenadas coordenadas;
+    Node(int _X, int _Y): coordenadas(_X,_Y){}
     ~Node(){}
 };
 
