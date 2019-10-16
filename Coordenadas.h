@@ -9,9 +9,10 @@ class Coordenadas {
 public:
     int X;
     int Y;
+    int Z;
 
     Coordenadas(){}
-    Coordenadas(int _X,int _Y): X(_X), Y(_Y){}
+    Coordenadas(int _X,int _Y, int _Z): X(_X), Y(_Y), Z(_Z){}
     ~Coordenadas(){}
 };
 

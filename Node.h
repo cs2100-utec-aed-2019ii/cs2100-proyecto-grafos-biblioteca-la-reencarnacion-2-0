@@ -10,7 +10,7 @@
 class Node {
 public:
     Coordenadas coordenadas;
-    Node(int _X, int _Y): coordenadas(_X,_Y){}
+    Node(int _X, int _Y, int _Z): coordenadas(_X,_Y,_Z){}
     ~Node(){}
 };
 
