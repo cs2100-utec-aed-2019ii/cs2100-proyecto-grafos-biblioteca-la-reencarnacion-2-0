@@ -7,12 +7,11 @@
 
 class Coordenadas {
 public:
-    int X;
-    int Y;
-    int Z;
+    float X;
+    float Y;
 
     Coordenadas(){}
-    Coordenadas(int _X,int _Y, int _Z): X(_X), Y(_Y), Z(_Z){}
+    Coordenadas(float _X, float _Y): X(_X), Y(_Y){}
     ~Coordenadas(){}
 };
 
