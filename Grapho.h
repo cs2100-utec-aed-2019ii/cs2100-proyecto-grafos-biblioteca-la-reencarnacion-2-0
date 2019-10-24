@@ -20,6 +20,12 @@ public:
     vector<Node<N,COOR>*> nodes;
     vector<Edge<N,COOR>*> edges;
     Grapho(){}
+
+    double density(){
+        nodes.size();
+        return result;
+    }
+
     ~Grapho(){}
 };
 
