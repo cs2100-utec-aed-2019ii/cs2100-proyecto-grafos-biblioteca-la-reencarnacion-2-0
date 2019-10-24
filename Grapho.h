@@ -14,6 +14,8 @@
 #define INT 1
 #define LETRA 2
 
+using namespace std;
+
 template<typename N, typename T, int type>
 class Grapho {
 public:
@@ -22,7 +24,8 @@ public:
     Grapho(){}
 
     double density(){
-        nodes.size();
+        double result = 0;
+        result = (2 * nodes.size())/(edges.size()*(edges.size()-1));
         return result;
     }
 
@@ -44,6 +47,12 @@ public:
         edges.push_back(new_edge);
     }
 
+    double density(){
+        double result = 0;
+        result = (2 * nodes.size())/(edges.size()*(edges.size()-1));
+        return result;
+    }
+
     ~Grapho(){}
 };
 
@@ -52,6 +61,11 @@ class Grapho <N, T, INT>{
 public:
     Node<N,INT>* head;
     Grapho(){}
+    double density(){
+        double result = 0;
+        result = (2 * nodes.size())/(edges.size()*(edges.size()-1));
+        return result;
+    }
     ~Grapho(){}
 };
 
@@ -60,6 +74,11 @@ class Grapho <N, T, LETRA>{
 public:
     Node<N,LETRA>* head;
     Grapho(){}
+    double density(){
+        double result = 0;
+        result = (2 * nodes.size())/(edges.size()*(edges.size()-1));
+        return result;
+    }
     ~Grapho(){}
 };
 
