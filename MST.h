@@ -7,32 +7,48 @@
 
 #include "Node.h"
 #include "Edge.h"
+#include "Grapho.h"
 #include <iostream>
 #include <vector>
 
-#define PRIM "p"
-#define KRUSKAL "k"
+#define PRIM 0
+#define KRUSKAL 1
 
 using namespace std;
-template <typename T>
+
+
+template <class G, class N>
 class MST{
-    Node<T>* root;
-    MST(Node<T>* node){
-        root = node;
+    G grapho;
+    N* root = nullptr;
+    MST(G _grapho){
+        grapho = _grapho;
+        root = grapho.nodes.front();
     }
     ~MST(){}
 };
+
+template <class G, class N>
 class MST<PRIM>{
-    Node<T>* root;
-    MST(Node<T>* node){
-        root = node;
+    G grapho;
+    N* root = nullptr;
+    MST(G _grapho){
+        grapho = _grapho;
+        root = grapho.nodes.front();
     }
+
+    void print;
+
     ~MST(){}
 };
+
+template <class G, class N>
 class MST<KRUSKAL>{
-    Node<T>* root;
-    MST(Node<T>* node){
-        root = node;
+    G grapho;
+    N* root = nullptr;
+    MST(G _grapho){
+        grapho = _grapho;
+        root = grapho.nodes.front();
     }
     ~MST(){}
 };

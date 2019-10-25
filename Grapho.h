@@ -7,6 +7,7 @@
 
 #include "Node.h"
 #include "Edge.h"
+#include "MST.h"
 #include <iostream>
 #include <vector>
 
