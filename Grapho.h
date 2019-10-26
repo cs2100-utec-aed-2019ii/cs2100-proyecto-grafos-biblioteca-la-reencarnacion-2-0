@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by VICTOR on 7/10/2019.
 //
 
@@ -9,13 +9,10 @@
 #include "Edge.h"
 #include <iostream>
 #include <vector>
-<<<<<<< HEAD
-=======
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
 using namespace std;
->>>>>>> Víctor
 
 #define COOR 0
 #define INT 1
@@ -36,8 +33,6 @@ public:
     vector<Node<N,COOR>*> nodes;
     vector<Edge<T,COOR>*> edges;
     Grapho(){}
-<<<<<<< HEAD
-=======
     Grapho(Grapho<N,T,COOR> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
@@ -81,7 +76,6 @@ public:
         }
         fe.close();
     }
->>>>>>> Víctor
     void insert_Node(float _X, float _Y){
         Node<N,COOR>* new_node = new Node<N,COOR>(_X,_Y);
         nodes.push_back(new_node);
@@ -90,26 +84,6 @@ public:
         Edge<T,COOR>* new_edge = new Edge<T,COOR>(node_1, node_2, weight);
         edges.push_back(new_edge);
     }
-<<<<<<< HEAD
-
-    ~Grapho(){}
-};
-
-template<typename N, typename T>
-class Grapho <N, T, INT>{
-public:
-    Node<N,INT>* head;
-    Grapho(){}
-    ~Grapho(){}
-};
-
-template<typename N, typename T>
-class Grapho <N, T, LETRA>{
-public:
-    Node<N,LETRA>* head;
-    Grapho(){}
-    ~Grapho(){}
-=======
     Grapho(int _nodes, int _edges){
         srand(time(NULL));
         for(int i = 0; i < _nodes; i++){
@@ -135,24 +109,26 @@ public:
 
     void remove_Edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2){
         Edge<T,COOR>* edge_to_remove= new Edge<T,COOR>(node_1,node_2);
-        for (int i = 0; i < edges.size(); i++){
-            if(edges[i]==edge_to_remove)
-                edges.pop_back(edges.begin()+i);
-        }
-        edges.pop_back(edge_to_remove);
-    }
-    void remove_Node(float _X, float _Y){
-        Node<N,COOR>* node_to_remove= new Node<N,COOR>(_X,_Y);
-        for(int i=0;i<nodes.size();i++){
-            if(nodes[i]==node_to_remove){
-                for (int j = 0; j < edges.size(); j++)
-                {
-                    if (edges[j]->node_1 == node_to_remove || edges[j]->node_2 == node_to_remove)
-                        edges.erase(edges.begin()+j);
-                    nodes.erase(nodes.begin()+i);
-                }
+        for(auto it = edges.begin(); it != edges.end(); it++){
+            if((*it)->node_1 == edge_to_remove->node_1 || (*it)->node_2== edge_to_remove->node_2){
+                edges.erase(it);
             }
         }
+    }
+    void remove_Node(float _X, float _Y){
+        Node<N,COOR>* remove_node = new Node<N,COOR>(_X,_Y);
+        
+        for(auto it= nodes.begin(); it != nodes.end(); it++){
+            if((*it)->coordenadas.X == remove_node->coordenadas.X || (*it)->coordenadas.Y==remove_node->coordenadas.Y){
+                nodes.erase(it);
+            }
+        }
+        for(auto it = edges.begin(); it != edges.end(); it++){
+            if((*it)->node_1 == remove_node || (*it)->node_2== remove_node){
+                edges.erase(it);
+            }
+        }
+
     }
 
     void MST(int primkruskal, int position) {
@@ -394,7 +370,6 @@ public:
         }
         fe.close();
     }
->>>>>>> Víctor
 };
 
 #endif //UNTITLED26_GRAPHO_H

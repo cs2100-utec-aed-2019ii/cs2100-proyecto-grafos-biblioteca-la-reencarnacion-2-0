@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
 #include <time.h>
 using namespace std;
@@ -196,7 +196,9 @@ int main (int argc, char* argv[]){
     grafo_0.insert_Edge(grafo_0.nodes[2],grafo_0.nodes[0],20);
     grafo_2.MST(0,10);
 
-    grafo_0.remove_Node(20.000000, 10.000000);
+   
+    //grafo_0.remove_Edge(grafo_0.nodes[0],grafo_0.nodes[1]);
+    //grafo_0.remove_Node(500.0,30.0);
 
 
     glutInit(&argc, argv);
