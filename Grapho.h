@@ -9,6 +9,9 @@
 #include "Edge.h"
 #include <iostream>
 #include <vector>
+#include <fstream>
+#include <cstdlib>
+using namespace std;
 
 #define COOR 0
 #define INT 1
@@ -29,6 +32,45 @@ public:
     vector<Node<N,COOR>*> nodes;
     vector<Edge<T,COOR>*> edges;
     Grapho(){}
+    Grapho(string nombre_archivo){
+        string cadena;
+        ifstream fe(nombre_archivo);
+        while (!fe.eof()) {
+            fe >> cadena;
+            if(cadena == "POINTS"){break;}
+        }
+        fe >> cadena;
+        int num_nodes = atoi(cadena.c_str());
+        fe >> cadena;
+        for(int i = 0; i < num_nodes; i++){
+            fe >> cadena;
+            float _X = atoi(cadena.c_str());
+            fe >> cadena;
+            float _Y = atoi(cadena.c_str());
+            fe >> cadena;
+            insert_Node(_X,_Y);
+        }
+        while (!fe.eof()) {
+            fe >> cadena;
+            if(cadena == "CELLS"){break;}
+        }
+        fe >> cadena;
+        int num_edge = atoi(cadena.c_str());
+        fe >> cadena;
+        for(int i = 0; i < num_edge; i++){
+            fe >> cadena;
+            fe >> cadena;
+            Node<N,COOR>* node_1 = nodes[atoi(cadena.c_str())];
+            fe >> cadena;
+            Node<N,COOR>* node_2 = nodes[atoi(cadena.c_str())];
+            fe >> cadena;
+            Node<N,COOR>* node_3 = nodes[atoi(cadena.c_str())];
+            insert_Edge(node_1,node_2,1);
+            insert_Edge(node_2,node_3,1);
+            insert_Edge(node_3,node_1,1);
+        }
+        fe.close();
+    }
     void insert_Node(float _X, float _Y){
         Node<N,COOR>* new_node = new Node<N,COOR>(_X,_Y);
         nodes.push_back(new_node);

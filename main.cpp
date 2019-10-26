@@ -19,6 +19,7 @@ using namespace std;
 #define LETRA 2
 
 Grapho<Coordenadas, int, COOR> grafo_0;
+Grapho<Coordenadas, int, COOR> grafo_1("Prueba.txt");
 
 double rotacion = 0;
 double move_x = 0;
@@ -71,16 +72,16 @@ GLvoid window_display(){
     glPopMatrix();
 */
 
-    vector<Node<Coordenadas,COOR>*>::iterator it = grafo_0.nodes.begin();
-    for(;it != grafo_0.nodes.end();it++){
+    vector<Node<Coordenadas,COOR>*>::iterator it = grafo_1.nodes.begin();
+    for(;it != grafo_1.nodes.end();it++){
         glPushMatrix();
         glTranslatef((*it)->coordenadas.X,(*it)->coordenadas.Y,0);
-        glutSolidSphere(5,20,10);
+        glutSolidSphere(1,20,10);
         glPopMatrix();
     }
 
-    vector<Edge<int,COOR>*>::iterator et = grafo_0.edges.begin();
-    for(;et != grafo_0.edges.end();et++){glPushMatrix();
+    vector<Edge<int,COOR>*>::iterator et = grafo_1.edges.begin();
+    for(;et != grafo_1.edges.end();et++){glPushMatrix();
         glBegin(GL_LINE_STRIP);
         glVertex3f((*et)->node_1->coordenadas.X,(*et)->node_1->coordenadas.Y,0);
         glVertex3f((*et)->node_2->coordenadas.X,(*et)->node_2->coordenadas.Y,0);
@@ -140,9 +141,9 @@ void Timer	(int value){ // intervalo en miliseg
 int main (int argc, char* argv[]){
     srand(time(NULL));
 
-    grafo_0.insert_Node(20,10);
-    grafo_0.insert_Node(500,30);
-    grafo_0.insert_Node(400,100);
+    grafo_0.insert_Node(20.0,10.0);
+    grafo_0.insert_Node(500.0,30.0);
+    grafo_0.insert_Node(400.0,100.0);
     grafo_0.insert_Edge(grafo_0.nodes[0],grafo_0.nodes[1],20);
     grafo_0.insert_Edge(grafo_0.nodes[1],grafo_0.nodes[2],20);
     grafo_0.insert_Edge(grafo_0.nodes[2],grafo_0.nodes[0],20);
@@ -155,7 +156,7 @@ int main (int argc, char* argv[]){
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(ANCHO, ALTO);
     glutInitWindowPosition(100,100);
-    glutCreateWindow("Boids!");
+    glutCreateWindow("Grafo");
     initGL();
     glEnable(GL_TEXTURE_2D);
     glutDisplayFunc(&window_display);
