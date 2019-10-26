@@ -18,12 +18,9 @@ class Node {
 public:
     Coordenadas coordenadas;
     int grade;
-    Node(float _X, float _Y): coordenadas(_X,_Y){
+    Node(float _X, float _Y): coordenadas(_X,_Y) {
         grade = 0;
     }
-
-
-
     ~Node(){}
 };
 
