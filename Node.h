@@ -6,9 +6,7 @@
 #define UNTITLED26_NODE_H
 
 #include "Coordenadas.h"
-#include "Grapho.h"
 #include <iostream>
-#include <vector>
 
 #define COOR 0
 #define INT 1
@@ -19,19 +17,16 @@ class Node {
 public:
     Coordenadas coordenadas;
     int grade;
-    vector<Node<Coordenadas,COOR>*> Vecinos;
-    Node(float _X, float _Y): coordenadas(_X,_Y) {
-        grade = 0;
-    }
+    Node(float _X, float _Y): coordenadas(_X,_Y),grade(0){}
     ~Node(){}
 };
 
 template<typename N>
 class Node<N, COOR>{
 public:
-    N coordenadas;
+    Coordenadas coordenadas;
     int grade;
-    Node(float _X, float _Y): coordenadas(_X,_Y){}
+    Node(float _X, float _Y): coordenadas(_X,_Y), grade(0) {}
     ~Node(){}
 };
 
@@ -40,7 +35,7 @@ class Node<N, INT>{
 public:
     N value;
     int grade;
-    Node(N _value): value(_value){}
+    Node(N _value): value(_value), grade(0){}
     ~Node(){}
 };
 
@@ -49,7 +44,7 @@ class Node<N, LETRA>{
 public:
     N value;
     int grade;
-    Node(N _value): value(_value){}
+    Node(N _value): value(_value), grade(0){}
     ~Node(){}
 };
 
