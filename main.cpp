@@ -19,6 +19,7 @@ using namespace std;
 #define LETRA 2
 
 Grapho<Coordenadas, int, COOR> grafo_0;
+Grapho<Coordenadas,int,COOR> grafo_1("prueba.txt")
 
 double rotacion = 0;
 double move_x = 0;
@@ -71,16 +72,16 @@ GLvoid window_display(){
     glPopMatrix();
 */
 
-    vector<Node<Coordenadas,COOR>*>::iterator it = grafo_0.nodes.begin();
-    for(;it != grafo_0.nodes.end();it++){
+    vector<Node<Coordenadas,COOR>*>::iterator it = grafo_1.nodes.begin();
+    for(;it != grafo_1.nodes.end();it++){
         glPushMatrix();
         glTranslatef((*it)->coordenadas.X,(*it)->coordenadas.Y,0);
         glutSolidSphere(5,20,10);
         glPopMatrix();
     }
 
-    vector<Edge<int,COOR>*>::iterator et = grafo_0.edges.begin();
-    for(;et != grafo_0.edges.end();et++){glPushMatrix();
+    vector<Edge<int,COOR>*>::iterator et = grafo_1.edges.begin();
+    for(;et != grafo_1.edges.end();et++){glPushMatrix();
         glBegin(GL_LINE_STRIP);
         glVertex3f((*et)->node_1->coordenadas.X,(*et)->node_1->coordenadas.Y,0);
         glVertex3f((*et)->node_2->coordenadas.X,(*et)->node_2->coordenadas.Y,0);
@@ -120,6 +121,7 @@ GLvoid callback_mouse(int button, int state, int x, int y){
         boids.push_back(boid(x,600-y));
         predador =  vector_t(x, 600-y,0);
     }
+    
     
 }
 
