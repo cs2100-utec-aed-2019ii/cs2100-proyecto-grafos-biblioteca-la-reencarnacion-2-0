@@ -38,7 +38,10 @@ public:
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 6225525... feat(grapho)
     Grapho(Grapho<N,T,COOR> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
@@ -93,8 +96,11 @@ public:
         edges.push_back(new_edge);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 6225525... feat(grapho)
 
     ~Grapho(){}
 };
@@ -143,6 +149,7 @@ public:
         for (int i = 0; i < edges.size(); i++){
             if(edges[i]==edge_to_remove)
 <<<<<<< HEAD
+<<<<<<< HEAD
                 edges.pop_back(edges.begin()+i)
         }
         edges.pop_back(edge_to_remove);
@@ -152,6 +159,24 @@ public:
                 edges.pop_back(edges.begin()+i);
         }
         edges.pop_back(edge_to_remove);
+=======
+                edges.pop_back(edges.begin()+i);
+        }
+        edges.pop_back(edge_to_remove);
+    }
+    void remove_Node(float _X, float _Y){
+        Node<N,COOR>* node_to_remove= new Node<N,COOR>(_X,_Y);
+        for(int i=0;i<nodes.size();i++){
+            if(nodes[i]==node_to_remove){
+                for (int j = 0; j < edges.size(); j++)
+                {
+                    if (edges[j]->node_1 == node_to_remove || edges[j]->node_2 == node_to_remove)
+                        edges.erase(edges.begin()+j);
+                    nodes.erase(nodes.begin()+i);
+                }
+            }
+        }
+>>>>>>> parent of 6225525... feat(grapho)
     }
     void remove_Node(float _X, float _Y){
 >>>>>>> parent of 6225525... feat(grapho)
@@ -284,6 +309,9 @@ public:
         fe.close();
     }
 >>>>>>> Víctor
+<<<<<<< HEAD
+>>>>>>> parent of 6225525... feat(grapho)
+=======
 >>>>>>> parent of 6225525... feat(grapho)
 };
 
