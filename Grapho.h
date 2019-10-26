@@ -33,7 +33,7 @@ public:
     void MST(int primkruskal, Node<N,COOR>* node){
         Node<N,COOR>* root = node;
         Edge<N,COOR>* NoReturn = nullptr;
-        Edge<N,COOR>* HelperEdge = Edge[0];
+        Edge<N,COOR>* HelperEdge = edges[0];
         int min = HelperEdge->weight;
         int max = 0;
         if (primkruskal == 0 ){ //Prim = 0
@@ -61,8 +61,8 @@ public:
             int verifier = min;
             while(min != max){
                 for (int i = 0; i < edges.size(); ++i) {
-                    if (paths[i]->weight <= min){
-                        min = paths[i]->weight;
+                    if (edges[i]->weight <= min){
+                        min = edges[i]->weight;
                         if(min == verifier){
                             cant++;
                         }
@@ -70,17 +70,17 @@ public:
                             cant = 1;
                         }
                     }
-                    if (paths[i]->weight > max){
-                        max = paths[i]->weight;
+                    if (edges[i]->weight > max){
+                        max = edges[i]->weight;
                     }
                 }
                 for (int j = 0; j < edges.size(); ++j) {
-                    if (paths[j]->weight == min){
-                        if(!iscicle){
+                    if (edges[j]->weight == min){
+                        if(edges[j]){
                             glBegin(GL_LINE_STRIP);
                                 glColor3f(1.0f,0.0f,0.0f);
-                                glVertex3f(paths[j]->node_1->coordenadas.X,HelperEdge->node_1->coordenadas.Y,0);
-                                glVertex3f(paths[j]->node_2->coordenadas.X,HelperEdge->node_2->coordenadas.Y,0);
+                                glVertex3f(edges[j]->node_1->coordenadas.X,HelperEdge->node_1->coordenadas.Y,0);
+                                glVertex3f(edges[j]->node_2->coordenadas.X,HelperEdge->node_2->coordenadas.Y,0);
                             glEnd();
                         }
                     }

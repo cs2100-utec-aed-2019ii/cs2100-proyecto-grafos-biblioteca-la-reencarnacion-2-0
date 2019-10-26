@@ -12,3 +12,4 @@ add_executable(cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0
         macros.h
         main.cpp
         Node.h)
+target_link_libraries(cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0 -lOpenGL32 -ltreeGLUT)

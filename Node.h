@@ -8,6 +8,7 @@
 #include "Coordenadas.h"
 #include "Grapho.h"
 #include <iostream>
+#include <vector>
 
 #define COOR 0
 #define INT 1
@@ -18,6 +19,7 @@ class Node {
 public:
     Coordenadas coordenadas;
     int grade;
+    vector<Node<Coordenadas,COOR>*> Vecinos;
     Node(float _X, float _Y): coordenadas(_X,_Y) {
         grade = 0;
     }
