@@ -7,6 +7,7 @@
 
 #include "Coordenadas.h"
 #include <iostream>
+#include <vector>
 
 #define COOR 0
 #define INT 1
@@ -16,6 +17,7 @@ template<typename N, int type>
 class Node {
 public:
     Coordenadas coordenadas;
+    vector<Node<Coordenadas,COOR>*> Vecinos;
     int grade;
     Node(float _X, float _Y): coordenadas(_X,_Y),grade(0){}
     ~Node(){}
@@ -25,6 +27,7 @@ template<typename N>
 class Node<N, COOR>{
 public:
     Coordenadas coordenadas;
+    vector<Node<Coordenadas,COOR>*> Vecinos;
     int grade;
     Node(float _X, float _Y): coordenadas(_X,_Y), grade(0) {}
     ~Node(){}
@@ -34,6 +37,7 @@ template<typename N>
 class Node<N, INT>{
 public:
     N value;
+    vector<Node<Coordenadas,COOR>*> Vecinos;
     int grade;
     Node(N _value): value(_value), grade(0){}
     ~Node(){}
@@ -43,6 +47,7 @@ template<typename N>
 class Node<N, LETRA>{
 public:
     N value;
+    vector<Node<Coordenadas,COOR>*> Vecinos;
     int grade;
     Node(N _value): value(_value), grade(0){}
     ~Node(){}
