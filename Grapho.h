@@ -40,39 +40,74 @@ public:
     Grapho(string nombre_archivo){
         string cadena;
         ifstream fe(nombre_archivo);
-        while (!fe.eof()) {
-            fe >> cadena;
-            if(cadena == "POINTS"){break;}
-        }
         fe >> cadena;
-        int num_nodes = atoi(cadena.c_str());
-        fe >> cadena;
-        for(int i = 0; i < num_nodes; i++){
+        if(cadena == "BIBLIOTECA"){
+            while (!fe.eof()) {
+                fe >> cadena;
+                if(cadena == "POINTS"){break;}
+            }
             fe >> cadena;
-            float _X = atoi(cadena.c_str());
+            int num_nodes = atoi(cadena.c_str());
             fe >> cadena;
-            float _Y = atoi(cadena.c_str());
+            for(int i = 0; i < num_nodes; i++){
+                fe >> cadena;
+                float _X = atoi(cadena.c_str());
+                fe >> cadena;
+                float _Y = atoi(cadena.c_str());
+                fe >> cadena;
+                insert_Node(_X,_Y);
+            }
+            while (!fe.eof()) {
+                fe >> cadena;
+                if(cadena == "CELLS"){break;}
+            }
             fe >> cadena;
-            insert_Node(_X,_Y);
-        }
-        while (!fe.eof()) {
+            int num_edge = atoi(cadena.c_str());
             fe >> cadena;
-            if(cadena == "CELLS"){break;}
-        }
-        fe >> cadena;
-        int num_edge = atoi(cadena.c_str());
-        fe >> cadena;
-        for(int i = 0; i < num_edge; i++){
+            for(int i = 0; i < num_edge; i++){
+                fe >> cadena;
+                Node<N,COOR>* node_1 = nodes[atoi(cadena.c_str())];
+                fe >> cadena;
+                Node<N,COOR>* node_2 = nodes[atoi(cadena.c_str())];
+                fe >> cadena;
+                T weight = atoi(cadena.c_str());
+                insert_Edge(node_1,node_2,weight);
+            }
+        } else {
+            while (!fe.eof()) {
+                fe >> cadena;
+                if(cadena == "POINTS"){break;}
+            }
             fe >> cadena;
+            int num_nodes = atoi(cadena.c_str());
             fe >> cadena;
-            Node<N,COOR>* node_1 = nodes[atoi(cadena.c_str())];
+            for(int i = 0; i < num_nodes; i++){
+                fe >> cadena;
+                float _X = atoi(cadena.c_str());
+                fe >> cadena;
+                float _Y = atoi(cadena.c_str());
+                fe >> cadena;
+                insert_Node(_X,_Y);
+            }
+            while (!fe.eof()) {
+                fe >> cadena;
+                if(cadena == "CELLS"){break;}
+            }
             fe >> cadena;
-            Node<N,COOR>* node_2 = nodes[atoi(cadena.c_str())];
+            int num_edge = atoi(cadena.c_str());
             fe >> cadena;
-            Node<N,COOR>* node_3 = nodes[atoi(cadena.c_str())];
-            insert_Edge(node_1,node_2,1);
-            insert_Edge(node_2,node_3,1);
-            insert_Edge(node_3,node_1,1);
+            for(int i = 0; i < num_edge; i++){
+                fe >> cadena;
+                fe >> cadena;
+                Node<N,COOR>* node_1 = nodes[atoi(cadena.c_str())];
+                fe >> cadena;
+                Node<N,COOR>* node_2 = nodes[atoi(cadena.c_str())];
+                fe >> cadena;
+                Node<N,COOR>* node_3 = nodes[atoi(cadena.c_str())];
+                insert_Edge(node_1,node_2,1);
+                insert_Edge(node_2,node_3,1);
+                insert_Edge(node_3,node_1,1);
+            }
         }
         fe.close();
     }
@@ -131,29 +166,40 @@ public:
 
     void MST(int primkruskal, int position) {
         Node<N,COOR>* root = nodes[position];
-        Edge<T,COOR>* NoReturn = nullptr;
-        int min = edges[0]->weight;
-        int max = 0;
-        if (primkruskal == 0 ) { //Prim =
-            for(int j = 0; j < nodes.size(); j++){
-                for (int i = 0; i < edges.size(); i++) {
-                    if ((edges[i]->node_1 == root || edges[i]->node_2 == root) && (edges[i] != NoReturn)) {
-                        if (edges[i]->weight < min) {
-                            min = edges[i]->weight;
-                            if (edges[i]->node_1 == root) {
-                                root = edges[i]->node_2;
-                                NoReturn = edges[i];
-                                edges[i]->G = 0;
-                                edges[i]->B = 0;
-                            }
-                            if (edges[i]->node_2 == root) {
-                                root = edges[i]->node_1;
-                                NoReturn = edges[i];
-                                edges[i]->G = 0;
-                                edges[i]->B = 0;
+        Edge<T,COOR>* select = nullptr;
+        int min = NULL;
+        vector<Node<Coordenadas,COOR>*> lista_nodes;
+        vector<Edge<T,COOR>*> lista_edges;
+        bool verificador = true;
+        if (primkruskal == 0) {//Prim =
+            verificador = true;
+            while(lista_nodes.size() != 5){
+                min = NULL;
+                for(vector<Edge<int,COOR>*>::iterator it = edges.begin();it != edges.end();it++){
+                    if((*it)->node_1 == root || (*it)->node_2 == root){
+                        if(lista_nodes.size() != 0){
+                            for(vector<Node<Coordenadas,COOR>*>::iterator et = lista_nodes.begin();et != lista_nodes.end();et++){
+                                if((*et)->coordenadas == (*it)->node_1->coordenadas || (*et)->coordenadas == (*it)->node_2->coordenadas){verificador = false;}
                             }
                         }
+                        if(min == NULL && verificador){
+                            min = (*it)->weight;
+                            select = *it;
+                        }
+                        else if((*it)->weight < min && verificador){
+                            min = (*it)->weight;
+                            select = *it;
+                        }
                     }
+                }
+                select->G = 0;
+                select->B = 0;
+                lista_edges.push_back(select);
+                lista_nodes.push_back(root);
+                if(select->node_1->coordenadas == root->coordenadas){
+                    root = select->node_2;
+                } else {
+                    root = select->node_1;
                 }
             }
         }
@@ -164,10 +210,11 @@ public:
     void saved (string nombre_archivo){
         string cadena;
         ofstream fe (nombre_archivo);
+        fe << "BIBLIOTECA" << endl;
         fe << "POINTS " << nodes.size() << " double" << endl;
         vector<Node<Coordenadas,COOR>*>::iterator it = nodes.begin();
         for(;it != nodes.end();it++){
-            fe << (*it)->coordenadas.X << ' ' << (*it)->coordenadas.X << " 0" << endl;
+            fe << (*it)->coordenadas.X << ' ' << (*it)->coordenadas.Y << " 0" << endl;
         }
         fe << '\n' << "CELLS " << edges.size() << " 1740" << endl;
         vector<Edge<int,COOR>*>::iterator et = edges.begin();
@@ -175,7 +222,7 @@ public:
             vector<Node<Coordenadas,COOR>*>::iterator at = nodes.begin();
             int i = 0;
             while((*at) != (*et)->node_1){i++;at++;}
-            fe << i << ' ';
+            fe << '3' << i << ' ';
             at = nodes.begin();
             i = 0;
             while((*at) != (*et)->node_2){i++;at++;}
@@ -255,6 +302,7 @@ public:
     void saved (string nombre_archivo){
         string cadena;
         ofstream fe (nombre_archivo);
+        fe << "BIBLIOTECA" << endl;
         fe << "VALUES " << nodes.size() << " double" << endl;
         vector<Node<int,INT>*>::iterator it = nodes.begin();
         for(;it != nodes.end();it++){
@@ -349,6 +397,7 @@ public:
     void saved (string nombre_archivo){
         string cadena;
         ofstream fe (nombre_archivo);
+        fe << "BIBLIOTECA" << endl;
         fe << "LETRAS " << nodes.size() << " double" << endl;
         vector<Node<string,LETRA>*>::iterator it = nodes.begin();
         for(;it != nodes.end();it++){

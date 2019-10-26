@@ -19,8 +19,13 @@ using namespace std;
 #define LETRA 2
 
 Grapho<Coordenadas, int, COOR> grafo_0;
-Grapho<Coordenadas, int, COOR> grafo_1("Prueba.txt");
-Grapho<Coordenadas, int, COOR> grafo_3(50,50);
+Grapho<Coordenadas, int, COOR> grafo_1("Prueba_2.txt");
+Grapho<Coordenadas, int, COOR> grafo_prueba_0("100points.vtk");
+Grapho<Coordenadas, int, COOR> grafo_prueba_1("1000points.vtk");
+Grapho<Coordenadas, int, COOR> grafo_prueba_2("2000points.vtk");
+Grapho<Coordenadas, int, COOR> grafo_prueba_3("binary_fire_symbolmesh_image.vtk");
+Grapho<Coordenadas, int, COOR> grafo_prueba_4("boingo_mesh_image_rgb_cell_data.vtk");
+Grapho<Coordenadas, int, COOR> grafo_3(5,12);
 Grapho<Coordenadas, int, COOR> grafo_2(grafo_1);
 Grapho<int, int, INT> grafo_4(12,12);
 Grapho<string, string, LETRA> grafo_5(15,15);
@@ -45,22 +50,22 @@ GLvoid window_display(){
     // Graficamos los voids
     //dibujar();
 
-    vector<Node<Coordenadas,COOR>*>::iterator it = grafo_0.nodes.begin();
-    for(;it != grafo_0.nodes.end();it++){
+    vector<Node<Coordenadas,COOR>*>::iterator it = grafo_2.nodes.begin();
+    for(;it != grafo_2.nodes.end();it++){
         glPushMatrix();
         glColor3f(1.0f,1.0f,1.0f);
         glTranslatef((*it)->coordenadas.X,(*it)->coordenadas.Y,0);
-        if(grafo_0.nodes.size() < 50)
+        if(grafo_2.nodes.size() < 50)
             glutSolidSphere(5,20,10);
-        else if(grafo_0.nodes.size() < 100)
+        else if(grafo_2.nodes.size() < 100)
             glutSolidSphere(3,20,10);
         else
             glutSolidSphere(1,20,10);
         glPopMatrix();
     }
 
-    vector<Edge<int,COOR>*>::iterator et = grafo_0.edges.begin();
-    for(;et != grafo_0.edges.end();et++){
+    vector<Edge<int,COOR>*>::iterator et = grafo_2.edges.begin();
+    for(;et != grafo_2.edges.end();et++){
         glPushMatrix();
         glColor3f((*et)->R,(*et)->G,(*et)->B);
         glBegin(GL_LINE_STRIP);
@@ -126,12 +131,19 @@ int main (int argc, char* argv[]){
     grafo_0.insert_Node(20.0,10.0);
     grafo_0.insert_Node(500.0,30.0);
     grafo_0.insert_Node(400.0,100.0);
-    grafo_0.insert_Edge(grafo_0.nodes[0],grafo_0.nodes[1],20);
+    grafo_0.insert_Node(200.0,100.0);
+    grafo_0.insert_Node(600.0,200.0);
+    grafo_0.insert_Node(300.0,200.0);
+    grafo_0.insert_Node(600.0,700.0);
+    grafo_0.insert_Edge(grafo_0.nodes[0],grafo_0.nodes[1],10);
     grafo_0.insert_Edge(grafo_0.nodes[1],grafo_0.nodes[2],20);
-    grafo_0.insert_Edge(grafo_0.nodes[2],grafo_0.nodes[0],20);
-    grafo_2.MST(0,10);
-
-    grafo_0.remove_Node(20.000000, 10.000000);
+    grafo_0.insert_Edge(grafo_0.nodes[2],grafo_0.nodes[3],30);
+    grafo_0.insert_Edge(grafo_0.nodes[3],grafo_0.nodes[4],60);
+    grafo_0.insert_Edge(grafo_0.nodes[4],grafo_0.nodes[0],15);
+    grafo_0.insert_Edge(grafo_0.nodes[1],grafo_0.nodes[4],5);
+    grafo_0.insert_Edge(grafo_0.nodes[3],grafo_0.nodes[5],7);
+    //grafo_0.MST(0,0);
+    grafo_0.saved("Prueba_2.txt");
 
 
     glutInit(&argc, argv);
