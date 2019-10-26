@@ -98,6 +98,67 @@ public:
         }
     }
 
+    Edge<T,COOR>* search_edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2) {
+        vector<Edge<int,COOR>*>::iterator et = edges.begin();
+        for(;et != edges.end();et++){
+            if(node_1 == (*et)->node_1 || node_2 == (*et)->node_2){
+                return *et;
+            }
+        }
+    }
+
+    void remove_Edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2){
+        Edge<T,COOR>* edge_to_remove= new Edge<T,COOR>(node_1,node_2);
+        for (int i = 0; i < edges.size(); i++){
+            if(edges[i]==edge_to_remove)
+                edges.pop_back(edges.begin()+i);
+        }
+        edges.pop_back(edge_to_remove);
+    }
+    void remove_Node(float _X, float _Y){
+        Node<N,COOR>* node_to_remove= new Node<N,COOR>(_X,_Y);
+        for(int i=0;i<nodes.size();i++){
+            if(nodes[i]==node_to_remove){
+                for (int j = 0; j < edges.size(); j++)
+                {
+                    if (edges[j]->node_1 == node_to_remove || edges[j]->node_2 == node_to_remove)
+                        edges.erase(edges.begin()+j);
+                    nodes.erase(nodes.begin()+i);
+                }
+            }
+        }
+    }
+
+    void MST(int primkruskal, int position) {
+        Node<N,COOR>* root = nodes[position];
+        Edge<T,COOR>* NoReturn = nullptr;
+        int min = edges[0]->weight;
+        int max = 0;
+        if (primkruskal == 0 ) { //Prim =
+            for(int j = 0; j < nodes.size(); j++){
+                for (int i = 0; i < edges.size(); i++) {
+                    if ((edges[i]->node_1 == root || edges[i]->node_2 == root) && (edges[i] != NoReturn)) {
+                        if (edges[i]->weight < min) {
+                            min = edges[i]->weight;
+                            if (edges[i]->node_1 == root) {
+                                root = edges[i]->node_2;
+                                NoReturn = edges[i];
+                                edges[i]->G = 0;
+                                edges[i]->B = 0;
+                            }
+                            if (edges[i]->node_2 == root) {
+                                root = edges[i]->node_1;
+                                NoReturn = edges[i];
+                                edges[i]->G = 0;
+                                edges[i]->B = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     ~Grapho(){}
 
     void saved (string nombre_archivo){

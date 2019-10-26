@@ -4,10 +4,10 @@
 using namespace std;
 
 #include <GL/glut.h>
+#include <iterator>
 #include "macros.h"
 #include "Grapho.h"
 #include "Coordenadas.h"
-#include <iterator>
 
 #define RED 0
 #define GREEN 0
@@ -21,7 +21,7 @@ using namespace std;
 Grapho<Coordenadas, int, COOR> grafo_0;
 Grapho<Coordenadas, int, COOR> grafo_1("Prueba.txt");
 Grapho<Coordenadas, int, COOR> grafo_3(50,50);
-Grapho<Coordenadas, int, COOR> grafo_2(grafo_3);
+Grapho<Coordenadas, int, COOR> grafo_2(grafo_1);
 Grapho<int, int, INT> grafo_4(12,12);
 Grapho<string, string, LETRA> grafo_5(15,15);
 
@@ -44,59 +44,32 @@ GLvoid window_display(){
 
     // Graficamos los voids
     //dibujar();
-/*
-    glPushMatrix();
-    glBegin(GL_LINE_STRIP);
-    glVertex3f(10,10,0);
-    glVertex3f(50,10,0);
-    glEnd();
-    glBegin(GL_LINE_STRIP);
-    glVertex3f(10,10,0);
-    glVertex3f(30,50,0);
-    glEnd();
-    glBegin(GL_LINE_STRIP);
-    glVertex3f(30,50,0);
-    glVertex3f(50,10,0);
-    glEnd();
-    glPopMatrix();
 
-    glPushMatrix();
-    glTranslatef(10,10,0);
-    glutSolidSphere(5,20,10);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(50,10,0);
-    glutSolidSphere(5,20,10);
-    glPopMatrix();
-
-    glPushMatrix();
-    glTranslatef(30,50,0);
-    glutSolidSphere(5,20,10);
-    glPopMatrix();
-*/
-
-    vector<Node<Coordenadas,COOR>*>::iterator it = grafo_2.nodes.begin();
-    for(;it != grafo_2.nodes.end();it++){
+    vector<Node<Coordenadas,COOR>*>::iterator it = grafo_0.nodes.begin();
+    for(;it != grafo_0.nodes.end();it++){
         glPushMatrix();
+        glColor3f(1.0f,1.0f,1.0f);
         glTranslatef((*it)->coordenadas.X,(*it)->coordenadas.Y,0);
-        if(grafo_2.nodes.size() < 50)
+        if(grafo_0.nodes.size() < 50)
             glutSolidSphere(5,20,10);
-        else if(grafo_2.nodes.size() < 100)
+        else if(grafo_0.nodes.size() < 100)
             glutSolidSphere(3,20,10);
         else
             glutSolidSphere(1,20,10);
         glPopMatrix();
     }
 
-    vector<Edge<int,COOR>*>::iterator et = grafo_2.edges.begin();
-    for(;et != grafo_2.edges.end();et++){glPushMatrix();
+    vector<Edge<int,COOR>*>::iterator et = grafo_0.edges.begin();
+    for(;et != grafo_0.edges.end();et++){
+        glPushMatrix();
+        glColor3f((*et)->R,(*et)->G,(*et)->B);
         glBegin(GL_LINE_STRIP);
         glVertex3f((*et)->node_1->coordenadas.X,(*et)->node_1->coordenadas.Y,0);
         glVertex3f((*et)->node_2->coordenadas.X,(*et)->node_2->coordenadas.Y,0);
         glEnd();
         glPopMatrix();
     }
+
 
     glutSwapBuffers();
     glFlush();
@@ -156,9 +129,10 @@ int main (int argc, char* argv[]){
     grafo_0.insert_Edge(grafo_0.nodes[0],grafo_0.nodes[1],20);
     grafo_0.insert_Edge(grafo_0.nodes[1],grafo_0.nodes[2],20);
     grafo_0.insert_Edge(grafo_0.nodes[2],grafo_0.nodes[0],20);
-    grafo_5.saved("Prueba_2.txt");
-    // Creamos los boids
-    //inicializar(500,2);
+    grafo_2.MST(0,10);
+
+    grafo_0.remove_Node(20.000000, 10.000000);
+
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
