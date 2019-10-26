@@ -41,8 +41,8 @@ public:
     N weight;
     Node<N,INT>* node_1;
     Node<N,INT>* node_2;
-    Edge(Node<N,INT>* _node_1, Node<N,INT>* _node_2) : node_1(_node_1), node_2(_node_2){node_1->grade = node_1->grade + 1;node_2->grade = node_2->grade + 1;}
-    Edge(Node<N,INT>* _node_1, Node<N,INT>* _node_2, N _weight) : node_1(_node_1), node_2(_node_2), weight(_weight){node_1->grade = node_1->grade + 1;node_2->grade = node_2->grade + 1;}
+    Edge(Node<N,INT>* _node_1, Node<N,INT>* _node_2) : node_1(_node_1), node_2(_node_2){}
+    Edge(Node<N,INT>* _node_1, Node<N,INT>* _node_2, N _weight) : node_1(_node_1), node_2(_node_2), weight(_weight){}
     ~Edge(){}
 };
 
@@ -52,8 +52,8 @@ public:
     N weight;
     Node<N,LETRA>* node_1;
     Node<N,LETRA>* node_2;
-    Edge(Node<N,LETRA>* _node_1, Node<N,LETRA>* _node_2) : node_1(_node_1), node_2(_node_2){node_1->grade = node_1->grade + 1;node_2->grade = node_2->grade + 1;}
-    Edge(Node<N,LETRA>* _node_1, Node<N,LETRA>* _node_2, N _weight) : node_1(_node_1), node_2(_node_2), weight(_weight){node_1->grade = node_1->grade + 1;node_2->grade = node_2->grade + 1;}
+    Edge(Node<N,LETRA>* _node_1, Node<N,LETRA>* _node_2) : node_1(_node_1), node_2(_node_2){}
+    Edge(Node<N,LETRA>* _node_1, Node<N,LETRA>* _node_2, N _weight) : node_1(_node_1), node_2(_node_2), weight(_weight){}
     ~Edge(){}
 };
 
