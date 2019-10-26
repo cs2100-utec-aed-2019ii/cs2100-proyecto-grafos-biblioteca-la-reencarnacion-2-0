@@ -11,5 +11,4 @@ add_executable(cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0
         Grapho.h
         macros.h
         main.cpp
-        MST.h
         Node.h)

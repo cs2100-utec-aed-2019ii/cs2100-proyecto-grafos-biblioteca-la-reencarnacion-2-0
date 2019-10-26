@@ -5,9 +5,9 @@
 #ifndef UNTITLED26_GRAPHO_H
 #define UNTITLED26_GRAPHO_H
 
+#include <GL/glut.h>
 #include "Node.h"
 #include "Edge.h"
-#include "MST.h"
 #include <iostream>
 #include <vector>
 
@@ -28,6 +28,57 @@ public:
         double result = 0;
         result = (2 * nodes.size())/(edges.size()*(edges.size()-1));
         return result;
+    }
+
+    void MST(int primkruskal){
+        Node<N,COOR>* root = nodes.front();
+        vector<Edge<N,COOR>*> paths = edges;
+        Edge<N,COOR>* HelperEdge = paths.back();
+        int min = HelperEdge->weight;
+        if (primkruskal == 0 ){ //Prim = 0
+            for (int i = 0; i < nodes.size(); i++) {
+                if (HelperEdge->node_1 == root || HelperEdge->node_2 == root){
+                    glBegin(GL_LINE_STRIP);
+                        glColor3f(1.0f,0.0f,0.0f);
+                        glVertex3f(HelperEdge->node_1->coordenadas.X,HelperEdge->node_1->coordenadas.Y,0);
+                        glVertex3f(HelperEdge->node_2->coordenadas.X,HelperEdge->node_2->coordenadas.Y,0);
+                    glEnd();
+                    glPushMatrix();
+                    if (HelperEdge->weight < min){
+                        min = HelperEdge->weight;
+                        if(HelperEdge->node_1 == root){
+                            root = HelperEdge->node_2;
+                        }
+                        if(HelperEdge->node_2 == root){
+                            root = HelperEdge->node_1;
+                        }
+                    }
+                }
+                else{
+                    paths.pop_back();
+                    HelperEdge = paths.back();
+                }
+            }
+        }
+        if (primkruskal == 1 ) { //Kruskal = 1
+            for (int i = 0; i < edges.size(); ++i) {
+                if (HelperEdge->weight <= min){
+                    min = HelperEdge->weight;
+                    while (edges){
+                        if (){
+                            glBegin(GL_LINE_STRIP);
+                                glColor3f(1.0f,0.0f,0.0f);
+                                glVertex3f(HelperEdge->node_1->coordenadas.X,HelperEdge->node_1->coordenadas.Y,0);
+                                glVertex3f(HelperEdge->node_2->coordenadas.X,HelperEdge->node_2->coordenadas.Y,0);
+                            glEnd();
+                        }
+
+                    }
+                }
+
+            }
+
+        }
     }
 
     ~Grapho(){}

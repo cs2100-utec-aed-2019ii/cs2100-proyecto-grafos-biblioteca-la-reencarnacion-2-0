@@ -164,5 +164,6 @@ int main (int argc, char* argv[]){
     glutTimerFunc(DURATION, Timer, 1);
     glutMouseFunc(&callback_mouse);
     glutMainLoop();
+
     return true;
 }
