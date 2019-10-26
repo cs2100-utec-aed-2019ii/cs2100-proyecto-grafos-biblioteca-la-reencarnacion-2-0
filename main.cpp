@@ -151,8 +151,62 @@ int main (int argc, char* argv[]){
     grafo_0.insert_Edge(grafo_0.nodes[2],grafo_0.nodes[0],20);
 
 
+<<<<<<< HEAD
     // Creamos los boids
     //inicializar(500,2);
+=======
+=======
+}
+
+GLvoid window_key(unsigned char key, int x, int y){
+    switch (key) {
+        case ECHAP:
+            exit(1);
+            break;
+
+        default:
+            break;
+    }
+}
+
+// funcion de mouse, para colocar elementos en las coodenadas del mouse
+// problema::  coloca en otras coordenadas mas no en el x,y
+GLvoid callback_mouse(int button, int state, int x, int y){
+    if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON){
+        //boids.push_back(boid(x,600-y));
+        //predador =  vector_t(x, 600-y,0);
+    }
+}
+
+// timer , para demorar el tiempo de redibujado de glut
+// permite que veamos mas lentamente la simulacion
+void Timer	(int value){ // intervalo en miliseg
+    glutPostRedisplay	(	);
+    rotacion++;
+    move_x++;
+    move_y++;
+
+    //actualizar(); //ACTUALIZAMOS los BOIDS
+
+    glutTimerFunc		(DURATION,Timer, 10);
+}/// Timer
+
+
+
+int main (int argc, char* argv[]){
+    srand(time(NULL));
+
+    grafo_0.insert_Node(20.0,10.0);
+    grafo_0.insert_Node(500.0,30.0);
+    grafo_0.insert_Node(400.0,100.0);
+    grafo_0.insert_Edge(grafo_0.nodes[0],grafo_0.nodes[1],20);
+    grafo_0.insert_Edge(grafo_0.nodes[1],grafo_0.nodes[2],20);
+    grafo_0.insert_Edge(grafo_0.nodes[2],grafo_0.nodes[0],20);
+    grafo_2.MST(0,10);
+
+    grafo_0.remove_Node(20.000000, 10.000000);
+
+>>>>>>> parent of 6225525... feat(grapho)
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
