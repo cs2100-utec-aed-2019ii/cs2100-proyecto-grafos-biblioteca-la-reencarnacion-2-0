@@ -133,6 +133,13 @@ public:
             }
         }
     }
+
+    float density(){
+        float result = 0;
+        result = (2 * nodes.size())/(edges.size()*(edges.size()-1));
+        return result;
+    }
+
     void setVecinos(){
         vector<Node<Coordenadas,COOR>*> Helper;
         T promedio = 0;
