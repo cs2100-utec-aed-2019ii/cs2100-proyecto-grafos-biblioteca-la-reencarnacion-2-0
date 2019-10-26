@@ -16,15 +16,17 @@ template<typename N, int type>
 class Node {
 public:
     Coordenadas coordenadas;
-    Node(float _X, float _Y): coordenadas(_X,_Y){}
+    int grade;
+    Node(float _X, float _Y): coordenadas(_X,_Y),grade(0){}
     ~Node(){}
 };
 
 template<typename N>
 class Node<N, COOR>{
 public:
-    N coordenadas;
-    Node(float _X, float _Y): coordenadas(_X,_Y){}
+    Coordenadas coordenadas;
+    int grade;
+    Node(float _X, float _Y): coordenadas(_X,_Y), grade(0) {}
     ~Node(){}
 };
 
@@ -32,7 +34,8 @@ template<typename N>
 class Node<N, INT>{
 public:
     N value;
-    Node(N _value): value(_value){}
+    int grade;
+    Node(N _value): value(_value), grade(0){}
     ~Node(){}
 };
 
@@ -40,7 +43,8 @@ template<typename N>
 class Node<N, LETRA>{
 public:
     N value;
-    Node(N _value): value(_value){}
+    int grade;
+    Node(N _value): value(_value), grade(0){}
     ~Node(){}
 };
 
