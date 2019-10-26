@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by VICTOR on 7/10/2019.
 //
 
@@ -9,12 +9,10 @@
 #include "Edge.h"
 #include <iostream>
 #include <vector>
-<<<<<<< HEAD
-=======
 #include <fstream>
 #include <cstdlib>
+#include <ctime>
 using namespace std;
->>>>>>> Víctor
 
 #define COOR 0
 #define INT 1
@@ -35,18 +33,10 @@ public:
     vector<Node<N,COOR>*> nodes;
     vector<Edge<T,COOR>*> edges;
     Grapho(){}
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of 6225525... feat(grapho)
     Grapho(Grapho<N,T,COOR> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
     }
->>>>>>> parent of 6225525... feat(grapho)
     Grapho(string nombre_archivo){
         string cadena;
         ifstream fe(nombre_archivo);
@@ -86,7 +76,6 @@ public:
         }
         fe.close();
     }
->>>>>>> Víctor
     void insert_Node(float _X, float _Y){
         Node<N,COOR>* new_node = new Node<N,COOR>(_X,_Y);
         nodes.push_back(new_node);
@@ -95,31 +84,6 @@ public:
         Edge<T,COOR>* new_edge = new Edge<T,COOR>(node_1, node_2, weight);
         edges.push_back(new_edge);
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> parent of 6225525... feat(grapho)
-
-    ~Grapho(){}
-};
-
-template<typename N, typename T>
-class Grapho <N, T, INT>{
-public:
-    Node<N,INT>* head;
-    Grapho(){}
-    ~Grapho(){}
-};
-
-template<typename N, typename T>
-class Grapho <N, T, LETRA>{
-public:
-    Node<N,LETRA>* head;
-    Grapho(){}
-    ~Grapho(){}
-=======
     Grapho(int _nodes, int _edges){
         srand(time(NULL));
         for(int i = 0; i < _nodes; i++){
@@ -143,85 +107,183 @@ public:
         }
     }
 
->>>>>>> parent of 6225525... feat(grapho)
     void remove_Edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2){
         Edge<T,COOR>* edge_to_remove= new Edge<T,COOR>(node_1,node_2);
-        for (int i = 0; i < edges.size(); i++){
-            if(edges[i]==edge_to_remove)
-<<<<<<< HEAD
-<<<<<<< HEAD
-                edges.pop_back(edges.begin()+i)
-        }
-        edges.pop_back(edge_to_remove);
-    }
-    void remove_node(float _X, float _Y){
-=======
-                edges.pop_back(edges.begin()+i);
-        }
-        edges.pop_back(edge_to_remove);
-=======
-                edges.pop_back(edges.begin()+i);
-        }
-        edges.pop_back(edge_to_remove);
-    }
-    void remove_Node(float _X, float _Y){
-        Node<N,COOR>* node_to_remove= new Node<N,COOR>(_X,_Y);
-        for(int i=0;i<nodes.size();i++){
-            if(nodes[i]==node_to_remove){
-                for (int j = 0; j < edges.size(); j++)
-                {
-                    if (edges[j]->node_1 == node_to_remove || edges[j]->node_2 == node_to_remove)
-                        edges.erase(edges.begin()+j);
-                    nodes.erase(nodes.begin()+i);
-                }
-            }
-        }
->>>>>>> parent of 6225525... feat(grapho)
-    }
-    void remove_Node(float _X, float _Y){
->>>>>>> parent of 6225525... feat(grapho)
-        Node<N,COOR>* node_to_remove= new Node<N,COOR>(_X,_Y);
-        for(int i=0;i<nodes.size();i++){
-            if(nodes[i]==node_to_remove){
-                for (int j = 0; j < edges.size(); j++)
-                {
-<<<<<<< HEAD
-                    if (edges[j].node_1 == node_to_remove || edges[j].node_2 == node_to_remove)
-                        edges.erase(edges.begin()+j);
-                nodes.pop_back(nodes.begin()+i);
-=======
-                    if (edges[j]->node_1 == node_to_remove || edges[j]->node_2 == node_to_remove)
-                        edges.erase(edges.begin()+j);
-                    nodes.erase(nodes.begin()+i);
-                }
->>>>>>> parent of 6225525... feat(grapho)
+        for(auto it = edges.begin(); it != edges.end(); it++){
+            if((*it)->node_1 == edge_to_remove->node_1 || (*it)->node_2== edge_to_remove->node_2){
+                edges.erase(it);
             }
         }
     }
-       
-    float density(){
-        return ((2*edges.size())/((nodes.size())*(nodes.size()-1)));
+    void remove_Node(float _X, float _Y){
+        Node<N,COOR>* remove_node = new Node<N,COOR>(_X,_Y);
+
+        for(auto it= nodes.begin(); it != nodes.end(); it++){
+            if((*it)->coordenadas.X == remove_node->coordenadas.X || (*it)->coordenadas.Y==remove_node->coordenadas.Y){
+                nodes.erase(it);
+            }
+        }
+        for(auto it = edges.begin(); it != edges.end(); it++){
+            if((*it)->node_1 == remove_node || (*it)->node_2== remove_node){
+                edges.erase(it);
+            }
+        }
+
+    }
+
+    void MST(int primkruskal, int position) {
+        Node<N,COOR>* root = nodes[position];
+        Edge<T,COOR>* NoReturn = nullptr;
+        int min = edges[0]->weight;
+        int max = 0;
+        if (primkruskal == 0 ) { //Prim =
+            for(int j = 0; j < nodes.size(); j++){
+                for (int i = 0; i < edges.size(); i++) {
+                    if ((edges[i]->node_1 == root || edges[i]->node_2 == root) && (edges[i] != NoReturn)) {
+                        if (edges[i]->weight < min) {
+                            min = edges[i]->weight;
+                            if (edges[i]->node_1 == root) {
+                                root = edges[i]->node_2;
+                                NoReturn = edges[i];
+                                edges[i]->G = 0;
+                                edges[i]->B = 0;
+                            }
+                            if (edges[i]->node_2 == root) {
+                                root = edges[i]->node_1;
+                                NoReturn = edges[i];
+                                edges[i]->G = 0;
+                                edges[i]->B = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     ~Grapho(){}
+
+    void saved (string nombre_archivo){
+        string cadena;
+        ofstream fe (nombre_archivo);
+        fe << "POINTS " << nodes.size() << " double" << endl;
+        vector<Node<Coordenadas,COOR>*>::iterator it = nodes.begin();
+        for(;it != nodes.end();it++){
+            fe << (*it)->coordenadas.X << ' ' << (*it)->coordenadas.X << " 0" << endl;
+        }
+        fe << '\n' << "CELLS " << edges.size() << " 1740" << endl;
+        vector<Edge<int,COOR>*>::iterator et = edges.begin();
+        for(;et != edges.end();et++){
+            vector<Node<Coordenadas,COOR>*>::iterator at = nodes.begin();
+            int i = 0;
+            while((*at) != (*et)->node_1){i++;at++;}
+            fe << i << ' ';
+            at = nodes.begin();
+            i = 0;
+            while((*at) != (*et)->node_2){i++;at++;}
+            fe << i  << ' ' << (*et)->weight << endl;
+        }
+        fe.close();
+    }
 };
 
 template<typename N, typename T>
 class Grapho <N, T, INT>{
 public:
-    Node<N,INT>* head;
+    vector<Node<N,INT>*> nodes;
+    vector<Edge<T,INT>*> edges;
     Grapho(){}
+    Grapho(Grapho<N,T,INT> const &grafo){
+        nodes = grafo.nodes;
+        edges = grafo.edges;
+    }
+    Grapho(string nombre_archivo){
+        string cadena;
+        ifstream fe(nombre_archivo);
+        while (!fe.eof()) {
+            fe >> cadena;
+            if(cadena == "VALUES"){break;}
+        }
+        fe >> cadena;
+        int num_nodes = atoi(cadena.c_str());
+        fe >> cadena;
+        for(int i = 0; i < num_nodes; i++){
+            fe >> cadena;
+            N value = atoi(cadena.c_str());
+            fe >> cadena;
+            insert_Node(value);
+        }
+        while (!fe.eof()) {
+            fe >> cadena;
+            if(cadena == "EDGES"){break;}
+        }
+        fe >> cadena;
+        int num_edge = atoi(cadena.c_str());
+        fe >> cadena;
+        for(int i = 0; i < num_edge; i++){
+            fe >> cadena;
+            Node<N,INT>* node_1 = nodes[atoi(cadena.c_str())];
+            fe >> cadena;
+            Node<N,INT>* node_2 = nodes[atoi(cadena.c_str())];
+            fe >> cadena;
+            T weight = atoi(cadena.c_str());
+            insert_Edge(node_1,node_2,weight);
+        }
+        fe.close();
+    }
+    void insert_Node(N value){
+        Node<N,INT>* new_node = new Node<N,INT>(value);
+        nodes.push_back(new_node);
+    }
+    void insert_Edge(Node<N,INT>* node_1, Node<N,INT>* node_2, T weight){
+        Edge<T,INT>* new_edge = new Edge<T,INT>(node_1, node_2, weight);
+        edges.push_back(new_edge);
+    }
+    Grapho(int _nodes, int _edges, int rango_min = 0, int rango_max = 100){
+        srand(time(NULL));
+        for(int i = 0; i < _nodes; i++){
+            N value = rand()%((rango_max-rango_min)+1);
+            insert_Node(value);
+        }
+        for(int i = 0; i < _edges; i++){
+            Node<N,INT>* node_1 = nodes[rand()%_nodes];
+            Node<N,INT>* node_2 = nodes[rand()%_nodes];
+            insert_Edge(node_1,node_2,rand()%(rango_max-rango_min));
+        }
+    }
+
     ~Grapho(){}
+
+    void saved (string nombre_archivo){
+        string cadena;
+        ofstream fe (nombre_archivo);
+        fe << "VALUES " << nodes.size() << " double" << endl;
+        vector<Node<int,INT>*>::iterator it = nodes.begin();
+        for(;it != nodes.end();it++){
+            fe << (*it)->value << endl;
+        }
+        fe << '\n' << "EDGE " << edges.size() << " 2019" << endl;
+        vector<Edge<int,INT>*>::iterator et = edges.begin();
+        for(;et != edges.end();et++){
+            vector<Node<int,INT>*>::iterator at = nodes.begin();
+            int i = 0;
+            while((*at) != (*et)->node_1){i++;at++;}
+            fe << i << ' ';
+            at = nodes.begin();
+            i = 0;
+            while((*at) != (*et)->node_2){i++;at++;}
+            fe << i  << ' ' << (*et)->weight << endl;
+        }
+        fe.close();
+    }
 };
 
 template<typename N, typename T>
 class Grapho <N, T, LETRA>{
 public:
-    Node<N,LETRA>* head;
+    vector<Node<N,LETRA>*> nodes;
+    vector<Edge<N,LETRA>*> edges;
     Grapho(){}
-<<<<<<< HEAD
-    ~Grapho(){}
-=======
     Grapho(Grapho<N,T,LETRA> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
@@ -308,11 +370,6 @@ public:
         }
         fe.close();
     }
->>>>>>> Víctor
-<<<<<<< HEAD
->>>>>>> parent of 6225525... feat(grapho)
-=======
->>>>>>> parent of 6225525... feat(grapho)
 };
 
 #endif //UNTITLED26_GRAPHO_H
