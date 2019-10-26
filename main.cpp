@@ -117,9 +117,10 @@ GLvoid window_key(unsigned char key, int x, int y){
 // problema::  coloca en otras coordenadas mas no en el x,y
 GLvoid callback_mouse(int button, int state, int x, int y){
     if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON){
-        //boids.push_back(boid(x,600-y));
-        //predador =  vector_t(x, 600-y,0);
+        boids.push_back(boid(x,600-y));
+        predador =  vector_t(x, 600-y,0);
     }
+    
 }
 
 // timer , para demorar el tiempo de redibujado de glut

@@ -38,16 +38,23 @@ public:
         edges.push_back(new_edge);
     }
     void remove_node(float _X, float _Y){
-        nodes.pop_back();
-
+        Node<N,COOR>* node_to_remove= new Node<N,COOR>(_X,_Y);
+        for(int i=0;i<nodes.size();i++){
+            if(nodes[i]==node_to_remove)
+                nodes.pop_back(nodes[i])
+        }
     }
     void remove_Edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2, T weight){
-        Edge<T,COOR>
-
-
-
         Edge<T,COOR>* edge_to_remove= new Edge<T,COOR>(node_1,node_2,weight);
+        for (int i = 0; i < edges.size(); i++){
+            if(edges[i]==edge_to_remove)
+                edges.pop_back(edges[i])
+        }
+        
         edges.pop_back(edge_to_remove);
+    }   
+    float density(){
+        return ((2*edges.size())/((nodes.size())*(nodes.size()-1)));
     }
 
     ~Grapho(){}
