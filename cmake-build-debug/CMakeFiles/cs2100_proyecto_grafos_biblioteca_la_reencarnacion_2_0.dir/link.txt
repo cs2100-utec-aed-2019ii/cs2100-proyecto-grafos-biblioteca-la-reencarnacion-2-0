@@ -1,3 +1,0 @@
-"C:\Program Files\JetBrains\CLion 2019.2.2\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0.dir/objects.a @CMakeFiles\cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0.dir\objects1.rsp
-C:\MinGW\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0.dir/objects.a -Wl,--no-whole-archive  -o cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0.exe -Wl,--out-implib,libcs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0.dir\linklibs.rsp
