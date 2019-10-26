@@ -38,7 +38,7 @@ public:
     Grapho(Grapho<N,T,COOR> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
-        setProm();
+        
     }
     Grapho(string nombre_archivo){
         string cadena;
@@ -78,7 +78,7 @@ public:
             insert_Edge(node_3,node_1,1);
         }
         fe.close();
-        setProm();
+        
     }
     void insert_Node(float _X, float _Y){
         Node<N,COOR>* new_node = new Node<N,COOR>(_X,_Y);
@@ -100,7 +100,7 @@ public:
             Node<N,COOR>* node_2 = nodes[rand()%_nodes];
             insert_Edge(node_1,node_2,rand()%51);
         }
-        setProm();
+        
     }
 
     Edge<T,COOR>* search_edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2) {
@@ -132,13 +132,6 @@ public:
                 }
             }
         }
-    }
-    void setProm(){
-        suma = 0;
-        for (int i = 0; i < edges.size(); i++) {
-            suma = suma + edges[i];
-        }
-        promedio = suma / edges.size();
     }
     void setVecinos(){
         for (int i = 0; i < nodes.size(); i++) {
@@ -220,7 +213,7 @@ public:
     Grapho(Grapho<N,T,INT> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
-        setProm();
+        
     }
     Grapho(string nombre_archivo){
         string cadena;
@@ -255,7 +248,7 @@ public:
             insert_Edge(node_1,node_2,weight);
         }
         fe.close();
-        setProm();
+        
     }
     void insert_Node(N value){
         Node<N,INT>* new_node = new Node<N,INT>(value);
@@ -276,7 +269,7 @@ public:
             Node<N,INT>* node_2 = nodes[rand()%_nodes];
             insert_Edge(node_1,node_2,rand()%(rango_max-rango_min));
         }
-        setProm();
+        
     }
 
     ~Grapho(){}
@@ -315,7 +308,7 @@ public:
     Grapho(Grapho<N,T,LETRA> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
-        setProm();
+        
     }
     Grapho(string nombre_archivo){
         string cadena;
@@ -350,7 +343,7 @@ public:
             insert_Edge(node_1,node_2,weight);
         }
         fe.close();
-        setProm();
+        
     }
     void insert_Node(N value){
         Node<N,LETRA>* new_node = new Node<N,LETRA>(value);
@@ -372,7 +365,7 @@ public:
             Node<N,LETRA>* node_2 = nodes[rand()%_nodes];
             insert_Edge(node_1,node_2,alfabeto[rand()%(26)]);
         }
-        setProm();
+        
     }
 
     ~Grapho(){}
