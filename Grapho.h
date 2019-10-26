@@ -9,13 +9,10 @@
 #include "Edge.h"
 #include <iostream>
 #include <vector>
-<<<<<<< HEAD
-=======
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
 using namespace std;
->>>>>>> Víctor
 
 #define COOR 0
 #define INT 1
@@ -25,7 +22,8 @@ template<typename N, typename T, int type>
 class Grapho {
 public:
     vector<Node<N,COOR>*> nodes;
-    vector<Edge<N,COOR>*> edges;
+    vector<Edge<T,COOR>*> edges;
+    float promedio = 0;
     Grapho(){}
     ~Grapho(){}
 };
@@ -35,12 +33,12 @@ class Grapho <N, T, COOR>{
 public:
     vector<Node<N,COOR>*> nodes;
     vector<Edge<T,COOR>*> edges;
+
     Grapho(){}
-<<<<<<< HEAD
-=======
     Grapho(Grapho<N,T,COOR> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
+        setVecinos();
     }
     Grapho(string nombre_archivo){
         string cadena;
@@ -80,8 +78,8 @@ public:
             insert_Edge(node_3,node_1,1);
         }
         fe.close();
+        
     }
->>>>>>> Víctor
     void insert_Node(float _X, float _Y){
         Node<N,COOR>* new_node = new Node<N,COOR>(_X,_Y);
         nodes.push_back(new_node);
@@ -90,26 +88,6 @@ public:
         Edge<T,COOR>* new_edge = new Edge<T,COOR>(node_1, node_2, weight);
         edges.push_back(new_edge);
     }
-<<<<<<< HEAD
-
-    ~Grapho(){}
-};
-
-template<typename N, typename T>
-class Grapho <N, T, INT>{
-public:
-    Node<N,INT>* head;
-    Grapho(){}
-    ~Grapho(){}
-};
-
-template<typename N, typename T>
-class Grapho <N, T, LETRA>{
-public:
-    Node<N,LETRA>* head;
-    Grapho(){}
-    ~Grapho(){}
-=======
     Grapho(int _nodes, int _edges){
         srand(time(NULL));
         for(int i = 0; i < _nodes; i++){
@@ -122,6 +100,7 @@ public:
             Node<N,COOR>* node_2 = nodes[rand()%_nodes];
             insert_Edge(node_1,node_2,rand()%51);
         }
+        
     }
 
     Edge<T,COOR>* search_edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2) {
@@ -154,7 +133,29 @@ public:
             }
         }
     }
-
+    void setVecinos(){
+        vector<Node<Coordenadas,COOR>*> Helper;
+        T promedio = 0;
+        T suma = 0;
+        for (int k = 0; k < edges.size(); ++k) {
+            suma = suma + edges[k]->weight;
+        }
+        promedio = suma / edges.size();
+        for (int i = 0; i < nodes.size(); i++) {
+            for (int j = 0; j < edges.size(); j++) {
+                if(edges[i]->weight <= promedio){
+                    if(edges[j]->node_1 == nodes[i]){
+                        Helper = nodes[i]->vecinos;
+                        Helper.push_back(edges[j]->node_2);
+                    }
+                    if(edges[j]->node_2 == nodes[i]){
+                        Helper = nodes[i]->vecinos;
+                        Helper.push_back(edges[j]->node_1);
+                    }
+                }
+            }
+        }
+    }
     void MST(int primkruskal, int position) {
         Node<N,COOR>* root = nodes[position];
         Edge<T,COOR>* NoReturn = nullptr;
@@ -216,10 +217,12 @@ class Grapho <N, T, INT>{
 public:
     vector<Node<N,INT>*> nodes;
     vector<Edge<T,INT>*> edges;
+    float promedio = 0;
     Grapho(){}
     Grapho(Grapho<N,T,INT> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
+        
     }
     Grapho(string nombre_archivo){
         string cadena;
@@ -254,6 +257,7 @@ public:
             insert_Edge(node_1,node_2,weight);
         }
         fe.close();
+        
     }
     void insert_Node(N value){
         Node<N,INT>* new_node = new Node<N,INT>(value);
@@ -274,6 +278,7 @@ public:
             Node<N,INT>* node_2 = nodes[rand()%_nodes];
             insert_Edge(node_1,node_2,rand()%(rango_max-rango_min));
         }
+        
     }
 
     ~Grapho(){}
@@ -306,11 +311,13 @@ template<typename N, typename T>
 class Grapho <N, T, LETRA>{
 public:
     vector<Node<N,LETRA>*> nodes;
-    vector<Edge<N,LETRA>*> edges;
+    vector<Edge<T,LETRA>*> edges;
+    float promedio = 0;
     Grapho(){}
     Grapho(Grapho<N,T,LETRA> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
+        
     }
     Grapho(string nombre_archivo){
         string cadena;
@@ -345,6 +352,7 @@ public:
             insert_Edge(node_1,node_2,weight);
         }
         fe.close();
+        
     }
     void insert_Node(N value){
         Node<N,LETRA>* new_node = new Node<N,LETRA>(value);
@@ -366,11 +374,10 @@ public:
             Node<N,LETRA>* node_2 = nodes[rand()%_nodes];
             insert_Edge(node_1,node_2,alfabeto[rand()%(26)]);
         }
+        
     }
 
-    ~Grapho(){
-
-    }
+    ~Grapho(){}
 
     void saved (string nombre_archivo){
         string cadena;
@@ -394,7 +401,7 @@ public:
         }
         fe.close();
     }
->>>>>>> Víctor
 };
 
 #endif //UNTITLED26_GRAPHO_H
+
