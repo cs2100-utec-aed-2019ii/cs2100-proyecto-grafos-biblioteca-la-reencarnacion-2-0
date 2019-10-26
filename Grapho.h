@@ -42,7 +42,10 @@ public:
 
     }
     void remove_Edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2, T weight){
-        
+        Edge<T,COOR>
+
+
+
         Edge<T,COOR>* edge_to_remove= new Edge<T,COOR>(node_1,node_2,weight);
         edges.pop_back(edge_to_remove);
     }
