@@ -27,7 +27,7 @@ template<typename N>
 class Node<N, COOR>{
 public:
     Coordenadas coordenadas;
-    vector<Node<Coordenadas,COOR>*> Vecinos;
+    vector<Node<Coordenadas,COOR>*> vecinos;
     int grade;
     Node(float _X, float _Y): coordenadas(_X,_Y), grade(0) {}
     ~Node(){}

@@ -22,7 +22,7 @@ template<typename N, typename T, int type>
 class Grapho {
 public:
     vector<Node<N,COOR>*> nodes;
-    vector<Edge<N,COOR>*> edges;
+    vector<Edge<T,COOR>*> edges;
     float promedio = 0;
     Grapho(){}
     ~Grapho(){}
@@ -33,12 +33,12 @@ class Grapho <N, T, COOR>{
 public:
     vector<Node<N,COOR>*> nodes;
     vector<Edge<T,COOR>*> edges;
-    float promedio = 0;
+
     Grapho(){}
     Grapho(Grapho<N,T,COOR> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
-        
+        setVecinos();
     }
     Grapho(string nombre_archivo){
         string cadena;
@@ -134,14 +134,23 @@ public:
         }
     }
     void setVecinos(){
+        vector<Node<Coordenadas,COOR>*> Helper;
+        T promedio = 0;
+        T suma = 0;
+        for (int k = 0; k < edges.size(); ++k) {
+            suma = suma + edges[k]->weight;
+        }
+        promedio = suma / edges.size();
         for (int i = 0; i < nodes.size(); i++) {
             for (int j = 0; j < edges.size(); j++) {
-                if(edges[i] <= promedio){
-                    if(edges[j].node_1 == nodes[i]){
-                        nodes[i].vecinos.pushback(edges[j].node_2);
+                if(edges[i]->weight <= promedio){
+                    if(edges[j]->node_1 == nodes[i]){
+                        Helper = nodes[i]->vecinos;
+                        Helper.push_back(edges[j]->node_2);
                     }
-                    if(edges[j].node_2 == nodes[i]){
-                        nodes[i].vecinos.pushback(edges[j].node_1);
+                    if(edges[j]->node_2 == nodes[i]){
+                        Helper = nodes[i]->vecinos;
+                        Helper.push_back(edges[j]->node_1);
                     }
                 }
             }
@@ -302,7 +311,7 @@ template<typename N, typename T>
 class Grapho <N, T, LETRA>{
 public:
     vector<Node<N,LETRA>*> nodes;
-    vector<Edge<N,LETRA>*> edges;
+    vector<Edge<T,LETRA>*> edges;
     float promedio = 0;
     Grapho(){}
     Grapho(Grapho<N,T,LETRA> const &grafo){
