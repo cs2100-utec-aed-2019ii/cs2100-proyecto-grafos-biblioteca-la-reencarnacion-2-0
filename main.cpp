@@ -9,6 +9,7 @@ using namespace std;
 #include "Grapho.h"
 #include "Coordenadas.h"
 
+
 #define RED 0
 #define GREEN 0
 #define BLUE 0
@@ -19,14 +20,14 @@ using namespace std;
 #define LETRA 2
 
 Grapho<Coordenadas, int, COOR> grafo_0;
-Grapho<Coordenadas, int, COOR> grafo_1("Prueba_2.txt");
+//Grapho<Coordenadas, int, COOR> grafo_1("Prueba_2.txt");
 Grapho<Coordenadas, int, COOR> grafo_prueba_0("100points.vtk");
 Grapho<Coordenadas, int, COOR> grafo_prueba_1("1000points.vtk");
 Grapho<Coordenadas, int, COOR> grafo_prueba_2("2000points.vtk");
 Grapho<Coordenadas, int, COOR> grafo_prueba_3("binary_fire_symbolmesh_image.vtk");
 Grapho<Coordenadas, int, COOR> grafo_prueba_4("boingo_mesh_image_rgb_cell_data.vtk");
 Grapho<Coordenadas, int, COOR> grafo_3(5,12);
-Grapho<Coordenadas, int, COOR> grafo_2(grafo_1);
+Grapho<Coordenadas, int, COOR> grafo_2(grafo_3);
 Grapho<int, int, INT> grafo_4(12,12);
 Grapho<string, string, LETRA> grafo_5(15,15);
 
@@ -142,8 +143,10 @@ int main (int argc, char* argv[]){
     grafo_0.insert_Edge(grafo_0.nodes[4],grafo_0.nodes[0],15);
     grafo_0.insert_Edge(grafo_0.nodes[1],grafo_0.nodes[4],5);
     grafo_0.insert_Edge(grafo_0.nodes[3],grafo_0.nodes[5],7);
-    //grafo_0.MST(0,0);
-    grafo_0.saved("Prueba_2.txt");
+    cout << grafo_0.density();
+    //grafo_0.insert_Edge(grafo_2.nodes[8674],grafo_2.nodes[8670],7);
+    //grafo_2.saved("Prueba_2.txt");
+    //grafo_0.remove_Node(700,700);
 
 
     glutInit(&argc, argv);
