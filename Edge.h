@@ -1,7 +1,3 @@
-//
-// Created by VICTOR on 16/10/2019.
-//
-
 #ifndef UNTITLED26_EDGE_H
 #define UNTITLED26_EDGE_H
 
@@ -18,8 +14,8 @@ public:
     N weight;
     Node<Coordenadas,COOR>* node_1;
     Node<Coordenadas,COOR>* node_2;
-    Edge(Node<Coordenadas,COOR>* _node_1, Node<Coordenadas,COOR>* _node_2) : node_1(_node_1), node_2(_node_2){node_1->grade = node_1->grade + 1;node_2->grade = node_2->grade + 1;}
-    Edge(Node<Coordenadas,COOR>* _node_1, Node<Coordenadas,COOR>* _node_2, N _weight) : node_1(_node_1), node_2(_node_2), weight(_weight){node_1->grade = node_1->grade + 1;node_2->grade = node_2->grade + 1;}
+    Edge(Node<Coordenadas,COOR>* _node_1, Node<Coordenadas,COOR>* _node_2) : node_1(_node_1), node_2(_node_2){}
+    Edge(Node<Coordenadas,COOR>* _node_1, Node<Coordenadas,COOR>* _node_2, N _weight) : node_1(_node_1), node_2(_node_2), weight(_weight){}
     ~Edge(){}
 };
 
@@ -27,11 +23,10 @@ template<typename N>
 class Edge <N, COOR>{
 public:
     N weight;
-    float R = 1, G = 1, B = 1;
     Node<Coordenadas,COOR>* node_1;
     Node<Coordenadas,COOR>* node_2;
-    Edge(Node<Coordenadas,COOR>* _node_1, Node<Coordenadas,COOR>* _node_2) : node_1(_node_1), node_2(_node_2){node_1->grade = node_1->grade + 1;node_2->grade = node_2->grade + 1;}
-    Edge(Node<Coordenadas,COOR>* _node_1, Node<Coordenadas,COOR>* _node_2, N _weight) : node_1(_node_1), node_2(_node_2), weight(_weight){node_1->grade = node_1->grade + 1;node_2->grade = node_2->grade + 1;}
+    Edge(Node<Coordenadas,COOR>* _node_1, Node<Coordenadas,COOR>* _node_2) : node_1(_node_1), node_2(_node_2){}
+    Edge(Node<Coordenadas,COOR>* _node_1, Node<Coordenadas,COOR>* _node_2, N _weight) : node_1(_node_1), node_2(_node_2), weight(_weight){}
     ~Edge(){}
 };
 

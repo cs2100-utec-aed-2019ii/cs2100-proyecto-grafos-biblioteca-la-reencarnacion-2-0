@@ -22,8 +22,7 @@ template<typename N, typename T, int type>
 class Grapho {
 public:
     vector<Node<N,COOR>*> nodes;
-    vector<Edge<T,COOR>*> edges;
-    float promedio = 0;
+    vector<Edge<N,COOR>*> edges;
     Grapho(){}
     ~Grapho(){}
 };
@@ -33,52 +32,84 @@ class Grapho <N, T, COOR>{
 public:
     vector<Node<N,COOR>*> nodes;
     vector<Edge<T,COOR>*> edges;
-
     Grapho(){}
     Grapho(Grapho<N,T,COOR> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
-        setVecinos();
     }
     Grapho(string nombre_archivo){
         string cadena;
         ifstream fe(nombre_archivo);
-        while (!fe.eof()) {
-            fe >> cadena;
-            if(cadena == "POINTS"){break;}
-        }
         fe >> cadena;
-        int num_nodes = atoi(cadena.c_str());
-        fe >> cadena;
-        for(int i = 0; i < num_nodes; i++){
+        if(cadena == "BIBLIOTECA"){
+            while (!fe.eof()) {
+                fe >> cadena;
+                if(cadena == "POINTS"){break;}
+            }
             fe >> cadena;
-            float _X = atoi(cadena.c_str());
+            int num_nodes = atoi(cadena.c_str());
             fe >> cadena;
-            float _Y = atoi(cadena.c_str());
+            for(int i = 0; i < num_nodes; i++){
+                fe >> cadena;
+                float _X = atoi(cadena.c_str());
+                fe >> cadena;
+                float _Y = atoi(cadena.c_str());
+                fe >> cadena;
+                insert_Node(_X,_Y);
+            }
+            while (!fe.eof()) {
+                fe >> cadena;
+                if(cadena == "CELLS"){break;}
+            }
             fe >> cadena;
-            insert_Node(_X,_Y);
-        }
-        while (!fe.eof()) {
+            int num_edge = atoi(cadena.c_str());
             fe >> cadena;
-            if(cadena == "CELLS"){break;}
-        }
-        fe >> cadena;
-        int num_edge = atoi(cadena.c_str());
-        fe >> cadena;
-        for(int i = 0; i < num_edge; i++){
+            for(int i = 0; i < num_edge; i++){
+                fe >> cadena;
+                Node<N,COOR>* node_1 = nodes[atoi(cadena.c_str())];
+                fe >> cadena;
+                Node<N,COOR>* node_2 = nodes[atoi(cadena.c_str())];
+                fe >> cadena;
+                T weight = atoi(cadena.c_str());
+                insert_Edge(node_1,node_2,weight);
+            }
+        } else {
+            while (!fe.eof()) {
+                fe >> cadena;
+                if(cadena == "POINTS"){break;}
+            }
             fe >> cadena;
+            int num_nodes = atoi(cadena.c_str());
             fe >> cadena;
-            Node<N,COOR>* node_1 = nodes[atoi(cadena.c_str())];
+            for(int i = 0; i < num_nodes; i++){
+                fe >> cadena;
+                float _X = atoi(cadena.c_str());
+                fe >> cadena;
+                float _Y = atoi(cadena.c_str());
+                fe >> cadena;
+                insert_Node(_X,_Y);
+            }
+            while (!fe.eof()) {
+                fe >> cadena;
+                if(cadena == "CELLS"){break;}
+            }
             fe >> cadena;
-            Node<N,COOR>* node_2 = nodes[atoi(cadena.c_str())];
+            int num_edge = atoi(cadena.c_str());
             fe >> cadena;
-            Node<N,COOR>* node_3 = nodes[atoi(cadena.c_str())];
-            insert_Edge(node_1,node_2,1);
-            insert_Edge(node_2,node_3,1);
-            insert_Edge(node_3,node_1,1);
+            for(int i = 0; i < num_edge; i++){
+                fe >> cadena;
+                fe >> cadena;
+                Node<N,COOR>* node_1 = nodes[atoi(cadena.c_str())];
+                fe >> cadena;
+                Node<N,COOR>* node_2 = nodes[atoi(cadena.c_str())];
+                fe >> cadena;
+                Node<N,COOR>* node_3 = nodes[atoi(cadena.c_str())];
+                insert_Edge(node_1,node_2,1);
+                insert_Edge(node_2,node_3,1);
+                insert_Edge(node_3,node_1,1);
+            }
         }
         fe.close();
-        
     }
     void insert_Node(float _X, float _Y){
         Node<N,COOR>* new_node = new Node<N,COOR>(_X,_Y);
@@ -100,7 +131,6 @@ public:
             Node<N,COOR>* node_2 = nodes[rand()%_nodes];
             insert_Edge(node_1,node_2,rand()%51);
         }
-        
     }
 
     Edge<T,COOR>* search_edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2) {
@@ -114,75 +144,62 @@ public:
 
     void remove_Edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2){
         Edge<T,COOR>* edge_to_remove= new Edge<T,COOR>(node_1,node_2);
-        for(auto it = edges.begin(); it != edges.end(); it++){
-            if((*it)->node_1 == edge_to_remove->node_1 || (*it)->node_2== edge_to_remove->node_2){
-                edges.erase(it);
-            }
+        for (int i = 0; i < edges.size(); i++){
+            if(edges[i]==edge_to_remove)
+                edges.pop_back(edges.begin()+i);
         }
+        edges.pop_back(edge_to_remove);
     }
     void remove_Node(float _X, float _Y){
-        Node<N,COOR>* remove_node = new Node<N,COOR>(_X,_Y);
-        
-        for(auto it= nodes.begin(); it != nodes.end(); it++){
-            if((*it)->coordenadas.X == remove_node->coordenadas.X || (*it)->coordenadas.Y==remove_node->coordenadas.Y){
-                nodes.erase(it);
-            }
-        }
-        for(auto it = edges.begin(); it != edges.end(); it++){
-            if((*it)->node_1 == remove_node || (*it)->node_2== remove_node){
-                edges.erase(it);
-            }
-        }
-
-    }
-    void setVecinos(){
-        vector<Node<Coordenadas,COOR>*> Helper;
-        T promedio = 0;
-        T suma = 0;
-        for (int k = 0; k < edges.size(); ++k) {
-            suma = suma + edges[k]->weight;
-        }
-        promedio = suma / edges.size();
-        for (int i = 0; i < nodes.size(); i++) {
-            for (int j = 0; j < edges.size(); j++) {
-                if(edges[i]->weight <= promedio){
-                    if(edges[j]->node_1 == nodes[i]){
-                        Helper = nodes[i]->vecinos;
-                        Helper.push_back(edges[j]->node_2);
-                    }
-                    if(edges[j]->node_2 == nodes[i]){
-                        Helper = nodes[i]->vecinos;
-                        Helper.push_back(edges[j]->node_1);
-                    }
+        Node<N,COOR>* node_to_remove= new Node<N,COOR>(_X,_Y);
+        for(int i=0;i<nodes.size();i++){
+            if(nodes[i]==node_to_remove){
+                for (int j = 0; j < edges.size(); j++)
+                {
+                    if (edges[j]->node_1 == node_to_remove || edges[j]->node_2 == node_to_remove)
+                        edges.erase(edges.begin()+j);
+                    nodes.erase(nodes.begin()+i);
                 }
             }
         }
     }
+
     void MST(int primkruskal, int position) {
         Node<N,COOR>* root = nodes[position];
-        Edge<T,COOR>* NoReturn = nullptr;
-        int min = edges[0]->weight;
-        int max = 0;
-        if (primkruskal == 0 ) { //Prim =
-            for(int j = 0; j < nodes.size(); j++){
-                for (int i = 0; i < edges.size(); i++) {
-                    if ((edges[i]->node_1 == root || edges[i]->node_2 == root) && (edges[i] != NoReturn)) {
-                        if (edges[i]->weight < min) {
-                            min = edges[i]->weight;
-                            if (edges[i]->node_1 == root) {
-                                root = edges[i]->node_2;
-                                NoReturn = edges[i];
-                                edges[i]->G = 0;
-                                edges[i]->B = 0;
-                            }
-                            if (edges[i]->node_2 == root) {
-                                root = edges[i]->node_1;
-                                NoReturn = edges[i];
-                                edges[i]->G = 0;
-                                edges[i]->B = 0;
+        Edge<T,COOR>* select = nullptr;
+        int min = NULL;
+        vector<Node<Coordenadas,COOR>*> lista_nodes;
+        vector<Edge<T,COOR>*> lista_edges;
+        bool verificador = true;
+        if (primkruskal == 0) {//Prim =
+            verificador = true;
+            while(lista_nodes.size() != 5){
+                min = NULL;
+                for(vector<Edge<int,COOR>*>::iterator it = edges.begin();it != edges.end();it++){
+                    if((*it)->node_1 == root || (*it)->node_2 == root){
+                        if(lista_nodes.size() != 0){
+                            for(vector<Node<Coordenadas,COOR>*>::iterator et = lista_nodes.begin();et != lista_nodes.end();et++){
+                                if((*et)->coordenadas == (*it)->node_1->coordenadas || (*et)->coordenadas == (*it)->node_2->coordenadas){verificador = false;}
                             }
                         }
+                        if(min == NULL && verificador){
+                            min = (*it)->weight;
+                            select = *it;
+                        }
+                        else if((*it)->weight < min && verificador){
+                            min = (*it)->weight;
+                            select = *it;
+                        }
                     }
+                }
+                select->G = 0;
+                select->B = 0;
+                lista_edges.push_back(select);
+                lista_nodes.push_back(root);
+                if(select->node_1->coordenadas == root->coordenadas){
+                    root = select->node_2;
+                } else {
+                    root = select->node_1;
                 }
             }
         }
@@ -193,10 +210,11 @@ public:
     void saved (string nombre_archivo){
         string cadena;
         ofstream fe (nombre_archivo);
+        fe << "BIBLIOTECA" << endl;
         fe << "POINTS " << nodes.size() << " double" << endl;
         vector<Node<Coordenadas,COOR>*>::iterator it = nodes.begin();
         for(;it != nodes.end();it++){
-            fe << (*it)->coordenadas.X << ' ' << (*it)->coordenadas.X << " 0" << endl;
+            fe << (*it)->coordenadas.X << ' ' << (*it)->coordenadas.Y << " 0" << endl;
         }
         fe << '\n' << "CELLS " << edges.size() << " 1740" << endl;
         vector<Edge<int,COOR>*>::iterator et = edges.begin();
@@ -204,7 +222,7 @@ public:
             vector<Node<Coordenadas,COOR>*>::iterator at = nodes.begin();
             int i = 0;
             while((*at) != (*et)->node_1){i++;at++;}
-            fe << i << ' ';
+            fe << '3' << i << ' ';
             at = nodes.begin();
             i = 0;
             while((*at) != (*et)->node_2){i++;at++;}
@@ -219,12 +237,10 @@ class Grapho <N, T, INT>{
 public:
     vector<Node<N,INT>*> nodes;
     vector<Edge<T,INT>*> edges;
-    float promedio = 0;
     Grapho(){}
     Grapho(Grapho<N,T,INT> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
-        
     }
     Grapho(string nombre_archivo){
         string cadena;
@@ -259,7 +275,6 @@ public:
             insert_Edge(node_1,node_2,weight);
         }
         fe.close();
-        
     }
     void insert_Node(N value){
         Node<N,INT>* new_node = new Node<N,INT>(value);
@@ -280,7 +295,6 @@ public:
             Node<N,INT>* node_2 = nodes[rand()%_nodes];
             insert_Edge(node_1,node_2,rand()%(rango_max-rango_min));
         }
-        
     }
 
     ~Grapho(){}
@@ -288,6 +302,7 @@ public:
     void saved (string nombre_archivo){
         string cadena;
         ofstream fe (nombre_archivo);
+        fe << "BIBLIOTECA" << endl;
         fe << "VALUES " << nodes.size() << " double" << endl;
         vector<Node<int,INT>*>::iterator it = nodes.begin();
         for(;it != nodes.end();it++){
@@ -313,13 +328,11 @@ template<typename N, typename T>
 class Grapho <N, T, LETRA>{
 public:
     vector<Node<N,LETRA>*> nodes;
-    vector<Edge<T,LETRA>*> edges;
-    float promedio = 0;
+    vector<Edge<N,LETRA>*> edges;
     Grapho(){}
     Grapho(Grapho<N,T,LETRA> const &grafo){
         nodes = grafo.nodes;
         edges = grafo.edges;
-        
     }
     Grapho(string nombre_archivo){
         string cadena;
@@ -354,7 +367,6 @@ public:
             insert_Edge(node_1,node_2,weight);
         }
         fe.close();
-        
     }
     void insert_Node(N value){
         Node<N,LETRA>* new_node = new Node<N,LETRA>(value);
@@ -376,14 +388,16 @@ public:
             Node<N,LETRA>* node_2 = nodes[rand()%_nodes];
             insert_Edge(node_1,node_2,alfabeto[rand()%(26)]);
         }
-        
     }
 
-    ~Grapho(){}
+    ~Grapho(){
+
+    }
 
     void saved (string nombre_archivo){
         string cadena;
         ofstream fe (nombre_archivo);
+        fe << "BIBLIOTECA" << endl;
         fe << "LETRAS " << nodes.size() << " double" << endl;
         vector<Node<string,LETRA>*>::iterator it = nodes.begin();
         for(;it != nodes.end();it++){
