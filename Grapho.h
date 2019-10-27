@@ -119,6 +119,30 @@ public:
         Edge<T,COOR>* new_edge = new Edge<T,COOR>(node_1, node_2, weight);
         edges.push_back(new_edge);
     }
+
+    void remove_Edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2){
+        Edge<T,COOR>* edge_to_remove= new Edge<T,COOR>(node_1,node_2);
+        for(auto it = edges.begin(); it != edges.end(); it++){
+            if((*it)->node_1 == edge_to_remove->node_1 || (*it)->node_2== edge_to_remove->node_2){
+                edges.erase(it);
+            }
+        }
+    }
+    void remove_Node(float _X, float _Y){
+        Node<N,COOR>* remove_node = new Node<N,COOR>(_X,_Y);
+
+        for(auto it= nodes.begin(); it != nodes.end(); it++){
+            if((*it)->coordenadas.X == remove_node->coordenadas.X || (*it)->coordenadas.Y==remove_node->coordenadas.Y){
+                nodes.erase(it);
+            }
+        }
+        for(auto it = edges.begin(); it != edges.end(); it++){
+            if((*it)->node_1 == remove_node || (*it)->node_2== remove_node){
+                edges.erase(it);
+            }
+        }
+
+    }
     Grapho(int _nodes, int _edges){
         srand(time(NULL));
         for(int i = 0; i < _nodes; i++){
@@ -142,23 +166,29 @@ public:
         }
     }
 
-    void remove_Edge(Node<N,COOR>* node_1, Node<N,COOR>* node_2){
-        Edge<T,COOR>* edge_to_remove= new Edge<T,COOR>(node_1,node_2);
-        for (int i = 0; i < edges.size(); i++){
-            if(edges[i]==edge_to_remove)
-                edges.pop_back(edges.begin()+i);
-        }
-        edges.pop_back(edge_to_remove);
+    float density(){
+        return (double)(2 * nodes.size())/(double)(edges.size()*(edges.size()-1));
     }
-    void remove_Node(float _X, float _Y){
-        Node<N,COOR>* node_to_remove= new Node<N,COOR>(_X,_Y);
-        for(int i=0;i<nodes.size();i++){
-            if(nodes[i]==node_to_remove){
-                for (int j = 0; j < edges.size(); j++)
-                {
-                    if (edges[j]->node_1 == node_to_remove || edges[j]->node_2 == node_to_remove)
-                        edges.erase(edges.begin()+j);
-                    nodes.erase(nodes.begin()+i);
+
+    void setVecinos(){
+        vector<Node<Coordenadas,COOR>*> Helper;
+        T promedio = 0;
+        T suma = 0;
+        for (int k = 0; k < edges.size(); ++k) {
+            suma = suma + edges[k]->weight;
+        }
+        promedio = suma / edges.size();
+        for (int i = 0; i < nodes.size(); i++) {
+            for (int j = 0; j < edges.size(); j++) {
+                if(edges[i]->weight <= promedio){
+                    if(edges[j]->node_1 == nodes[i]){
+                        Helper = nodes[i]->vecinos;
+                        Helper.push_back(edges[j]->node_2);
+                    }
+                    if(edges[j]->node_2 == nodes[i]){
+                        Helper = nodes[i]->vecinos;
+                        Helper.push_back(edges[j]->node_1);
+                    }
                 }
             }
         }
