@@ -1,0 +1,3 @@
+C:/Users/Usuario/Documents/GitHub/cs2100-proyecto-grafos-biblioteca-la-reencarnacion-2-0/cmake-build-debug/CMakeFiles/cs2100_proyecto_grafos_biblioteca_la_reencarnacion_2_0.dir
+C:/Users/Usuario/Documents/GitHub/cs2100-proyecto-grafos-biblioteca-la-reencarnacion-2-0/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Usuario/Documents/GitHub/cs2100-proyecto-grafos-biblioteca-la-reencarnacion-2-0/cmake-build-debug/CMakeFiles/rebuild_cache.dir
