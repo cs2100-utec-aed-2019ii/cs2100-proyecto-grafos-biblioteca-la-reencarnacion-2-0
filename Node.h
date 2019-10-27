@@ -17,6 +17,7 @@ class Node {
 public:
     Coordenadas coordenadas;
     int grade;
+    vector<Node<Coordenadas,COOR>*> vecinos;
     Node(float _X, float _Y): coordenadas(_X,_Y),grade(0){}
     ~Node(){}
 };
@@ -26,6 +27,7 @@ class Node<N, COOR>{
 public:
     Coordenadas coordenadas;
     int grade;
+    vector<Node<Coordenadas,COOR>*> vecinos;
     Node(float _X, float _Y): coordenadas(_X,_Y), grade(0) {}
     ~Node(){}
 };
@@ -35,6 +37,7 @@ class Node<N, INT>{
 public:
     N value;
     int grade;
+    vector<Node<N,INT>*> vecinos;
     Node(N _value): value(_value), grade(0){}
     ~Node(){}
 };
@@ -44,6 +47,7 @@ class Node<N, LETRA>{
 public:
     N value;
     int grade;
+    vector<Node<N,LETRA>*> vecinos;
     Node(N _value): value(_value), grade(0){}
     ~Node(){}
 };
