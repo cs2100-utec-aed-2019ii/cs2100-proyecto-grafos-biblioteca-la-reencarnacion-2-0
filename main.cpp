@@ -3,11 +3,15 @@
 #include <time.h>
 using namespace std;
 
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <GL/glut.h>
 #include <iterator>
+#include <limits>
 #include "macros.h"
 #include "Grapho.h"
 #include "Coordenadas.h"
+
 
 #define RED 0
 #define GREEN 0
@@ -18,16 +22,15 @@ using namespace std;
 #define INT 1
 #define LETRA 2
 
-Grapho<Coordenadas, int, COOR> grafo_0;
-Grapho<Coordenadas, int, COOR> grafo_1("Prueba.txt");
-Grapho<Coordenadas, int, COOR> grafo_3(50,50);
-Grapho<Coordenadas, int, COOR> grafo_2(grafo_1);
-Grapho<int, int, INT> grafo_4(12,12);
-Grapho<string, string, LETRA> grafo_5(15,15);
+Grapho<Coordenadas, float, COOR> grafo_1("Prueba_2.txt");
+Grapho<Coordenadas, float, COOR> grafo_2(grafo_1);
 
 double rotacion = 0;
 double move_x = 0;
 double move_y = 0;
+int node = rand()%grafo_2.nodes.size();
+Coordenadas inicio;
+Coordenadas final;
 
 // inicializamos glut
 GLvoid initGL(){
@@ -45,22 +48,22 @@ GLvoid window_display(){
     // Graficamos los voids
     //dibujar();
 
-    vector<Node<Coordenadas,COOR>*>::iterator it = grafo_0.nodes.begin();
-    for(;it != grafo_0.nodes.end();it++){
+    auto it = grafo_2.nodes.begin();
+    for(;it != grafo_2.nodes.end();it++){
         glPushMatrix();
-        glColor3f(1.0f,1.0f,1.0f);
+        glColor3f((*it)->R,(*it)->G,(*it)->B);
         glTranslatef((*it)->coordenadas.X,(*it)->coordenadas.Y,0);
-        if(grafo_0.nodes.size() < 50)
+        if(grafo_2.nodes.size() < 50)
             glutSolidSphere(5,20,10);
-        else if(grafo_0.nodes.size() < 100)
+        else if(grafo_2.nodes.size() < 100)
             glutSolidSphere(3,20,10);
         else
             glutSolidSphere(1,20,10);
         glPopMatrix();
     }
 
-    vector<Edge<int,COOR>*>::iterator et = grafo_0.edges.begin();
-    for(;et != grafo_0.edges.end();et++){
+    auto et = grafo_2.edges.begin();
+    for(;et != grafo_2.edges.end();et++){
         glPushMatrix();
         glColor3f((*et)->R,(*et)->G,(*et)->B);
         glBegin(GL_LINE_STRIP);
@@ -118,34 +121,159 @@ void Timer	(int value){ // intervalo en miliseg
     glutTimerFunc		(DURATION,Timer, 10);
 }/// Timer
 
+void specialKeyInput(int key, int x, int y){
+    auto it = grafo_2.nodes.begin();
+    for(int i = 0; i < node; it++,i++);
 
+    if(key == GLUT_KEY_LEFT){
+        (*it)->B = 1;
+        (*it)->G = 1;
+        (*it)->R = 1;
+        float weight = 0;
+        auto elegido = (*it)->vecinos.begin();
+        auto et = (*it)->vecinos.begin();
+        for(; et != (*it)->vecinos.end(); et++)
+            if(weight < et->second){
+                weight = et->second;
+                elegido = et;
+            }
+        int i = 0;
+        auto at = grafo_2.nodes.begin();
+        for(; (*at)->coordenadas.X != elegido->first->coordenadas.X && (*at)->coordenadas.Y != elegido->first->coordenadas.Y; at++,i++);
+        node = i;
+        (*at)->B = 0;
+        (*at)->G = 0;
+        (*it)->R = 1;
+        auto ot = grafo_2.edges.begin();
+        for(; ot != grafo_2.edges.end(); ot++){
+            if(((*ot)->node_1->coordenadas.X == elegido->first->coordenadas.X &&
+                (*ot)->node_2->coordenadas.X == (*it)->coordenadas.X &&
+                (*ot)->node_1->coordenadas.Y == elegido->first->coordenadas.Y &&
+                (*ot)->node_2->coordenadas.Y == (*it)->coordenadas.Y) ||
+                ((*ot)->node_1->coordenadas.X == (*it)->coordenadas.X &&
+                (*ot)->node_2->coordenadas.X == elegido->first->coordenadas.X &&
+                (*ot)->node_1->coordenadas.Y == (*it)->coordenadas.Y &&
+                (*ot)->node_2->coordenadas.Y == elegido->first->coordenadas.Y)){
+                    (*ot)->B = 0;
+                    (*ot)->G = 0;
+            }
+        }
+    }
+    if(key == GLUT_KEY_RIGHT){
+        (*it)->B = 1;
+        (*it)->G = 1;
+        (*it)->R = 1;
+        float weight = numeric_limits<float>::max();
+        auto elegido = (*it)->vecinos.begin();
+        auto et = (*it)->vecinos.begin();
+        for(; et != (*it)->vecinos.end(); et++)
+            if(weight > et->second){
+                weight = et->second;
+                elegido = et;
+            }
+        int i = 0;
+        auto at = grafo_2.nodes.begin();
+        for(; (*at)->coordenadas.X != elegido->first->coordenadas.X && (*at)->coordenadas.Y != elegido->first->coordenadas.Y; at++,i++);
+        node = i;
+        (*at)->B = 0;
+        (*at)->G = 0;
+        (*it)->R = 1;
+        auto ot = grafo_2.edges.begin();
+        for(; ot != grafo_2.edges.end(); ot++){
+            if(((*ot)->node_1->coordenadas.X == elegido->first->coordenadas.X &&
+                (*ot)->node_2->coordenadas.X == (*it)->coordenadas.X &&
+                (*ot)->node_1->coordenadas.Y == elegido->first->coordenadas.Y &&
+                (*ot)->node_2->coordenadas.Y == (*it)->coordenadas.Y) ||
+               ((*ot)->node_1->coordenadas.X == (*it)->coordenadas.X &&
+                (*ot)->node_2->coordenadas.X == elegido->first->coordenadas.X &&
+                (*ot)->node_1->coordenadas.Y == (*it)->coordenadas.Y &&
+                (*ot)->node_2->coordenadas.Y == elegido->first->coordenadas.Y)){
+                (*ot)->B = 0;
+                (*ot)->G = 0;
+            }
+        }
+    }
+    glutPostRedisplay();
+}
+
+void mousebutton (int boton, int estado, int x, int y){
+    if (boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN){
+        auto it = grafo_2.nodes.begin();
+        for(;it != grafo_2.nodes.end(); it++){
+            if((*it)->coordenadas.X == inicio.X && (*it)->coordenadas.Y == inicio.Y){
+                (*it)->B = 1;
+                (*it)->R = 1;
+                (*it)->G = 1;
+            }
+        }
+
+        it = grafo_2.nodes.begin();
+        for(;it != grafo_2.nodes.end(); it++){
+            if((*it)->coordenadas.X-3 <= x && (*it)->coordenadas.X+3 >= x && (*it)->coordenadas.Y-3 <= ALTO-y && (*it)->coordenadas.Y+3 >= ALTO-y){
+                (*it)->B = 0;
+                (*it)->R = 0;
+                (*it)->G = 1;
+                inicio.X = (*it)->coordenadas.X;
+                inicio.Y = (*it)->coordenadas.Y;
+            }
+        }
+    }
+
+    if (boton == GLUT_RIGHT_BUTTON && estado == GLUT_DOWN){
+        auto it = grafo_2.nodes.begin();
+        for(;it != grafo_2.nodes.end(); it++){
+            if((*it)->coordenadas.X == final.X && (*it)->coordenadas.Y == final.Y){
+                (*it)->B = 1;
+                (*it)->R = 1;
+                (*it)->G = 1;
+            }
+        }
+
+        it = grafo_2.nodes.begin();
+        for(;it != grafo_2.nodes.end(); it++){
+            if((*it)->coordenadas.X-3 <= x && (*it)->coordenadas.X+3 >= x && (*it)->coordenadas.Y-3 <= ALTO-y && (*it)->coordenadas.Y+3 >= ALTO-y){
+                (*it)->B = 0;
+                (*it)->R = 0;
+                (*it)->G = 1;
+                final.X = (*it)->coordenadas.X;
+                final.Y = (*it)->coordenadas.Y;
+            }
+        }
+    }
+    glutPostRedisplay ();
+}
 
 int main (int argc, char* argv[]){
-    srand(time(NULL));
 
-    grafo_0.insert_Node(20.0,10.0);
-    grafo_0.insert_Node(500.0,30.0);
-    grafo_0.insert_Node(400.0,100.0);
-    grafo_0.insert_Edge(grafo_0.nodes[0],grafo_0.nodes[1],20);
-    grafo_0.insert_Edge(grafo_0.nodes[1],grafo_0.nodes[2],20);
-    grafo_0.insert_Edge(grafo_0.nodes[2],grafo_0.nodes[0],20);
-    grafo_2.MST(0,10);
-
-    grafo_0.remove_Node(20.000000, 10.000000);
+    auto it = grafo_2.nodes.begin();
+    for(int i = 0; i < node; it++,i++);
+    (*it)->B = 0;
+    (*it)->G = 0;
+    (*it)->R = 1;
 
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(ANCHO, ALTO);
-    glutInitWindowPosition(100,100);
+    glutInitWindowPosition(100,50);
     glutCreateWindow("Grafo");
     initGL();
     glEnable(GL_TEXTURE_2D);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0,ANCHO,0.0,ALTO, -100.0, 100.0);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
     glutDisplayFunc(&window_display);
+    glutSpecialFunc(specialKeyInput);
     glutReshapeFunc(&window_reshape);
     glutKeyboardFunc(&window_key);
     glutTimerFunc(DURATION, Timer, 1);
     glutMouseFunc(&callback_mouse);
+    glutMouseFunc(&mousebutton);
     glutMainLoop();
     return true;
 }

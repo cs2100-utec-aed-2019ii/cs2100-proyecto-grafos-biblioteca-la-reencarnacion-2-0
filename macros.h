@@ -14,8 +14,8 @@ using namespace std;
 
 
 // definiciones estandar para la ventana de opengl y limites de los Boids
-#define ANCHO	600
-#define ALTO	600
+#define ANCHO	1000
+#define ALTO	720
 #define PROFUNDIDAD 1200
 
 #define ORADIUS 10

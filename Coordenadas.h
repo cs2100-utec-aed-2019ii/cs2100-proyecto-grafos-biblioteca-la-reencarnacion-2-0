@@ -12,6 +12,11 @@ public:
 
     Coordenadas(){}
     Coordenadas(float _X, float _Y): X(_X), Y(_Y){}
+
+    bool operator == (const Coordenadas& it) const {
+        return X == it.X and Y == it.Y;
+    }
+
     ~Coordenadas(){}
 };
 
