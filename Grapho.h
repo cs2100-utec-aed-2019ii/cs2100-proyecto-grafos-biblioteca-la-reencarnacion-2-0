@@ -1,5 +1,5 @@
 //
-// Created by VICTOR on 7/10/2019.
+// Created by Marlon on 7/10/2019.
 //
 
 #ifndef UNTITLED26_GRAPHO_H
@@ -15,7 +15,10 @@
 #include <cmath>
 #include <queue>
 #include <list>
+<<<<<<< HEAD
 #include <map>
+=======
+>>>>>>> Marlon
 using namespace std;
 
 #define COOR 0
@@ -110,9 +113,15 @@ public:
                 Node<N,T,COOR>* node_2 = nodes[atoi(cadena.c_str())];
                 fe >> cadena;
                 Node<N,T,COOR>* node_3 = nodes[atoi(cadena.c_str())];
+<<<<<<< HEAD
                 insert_Edge(node_1,node_2,sqrt(pow(node_1->coordenadas.X-node_2->coordenadas.X,2)+pow(node_1->coordenadas.Y-node_2->coordenadas.Y,2)));
                 insert_Edge(node_2,node_3,sqrt(pow(node_2->coordenadas.X-node_3->coordenadas.X,2)+pow(node_2->coordenadas.Y-node_3->coordenadas.Y,2)));
                 insert_Edge(node_3,node_1,sqrt(pow(node_3->coordenadas.X-node_1->coordenadas.X,2)+pow(node_3->coordenadas.Y-node_1->coordenadas.Y,2)));
+=======
+                insert_Edge(node_1,node_2,sqrt(abs((node_1->coordenadas.X-node_2->coordenadas.X)/(node_1->coordenadas.Y-node_2->coordenadas.Y))));
+                insert_Edge(node_2,node_3,sqrt(abs((node_2->coordenadas.X-node_3->coordenadas.X)/(node_2->coordenadas.Y-node_3->coordenadas.Y))));
+                insert_Edge(node_3,node_1,sqrt(abs((node_3->coordenadas.X-node_1->coordenadas.X)/(node_3->coordenadas.Y-node_1->coordenadas.Y))));
+>>>>>>> Marlon
             }
         }
         fe.close();
@@ -160,9 +169,14 @@ public:
                 edges.erase(it);
             }
         }
+<<<<<<< HEAD
 
     }
 
+=======
+
+    }
+>>>>>>> Marlon
     Edge<N,T,COOR>* search_edge(Node<N,T,COOR>* node_1, Node<N,T,COOR>* node_2) {
         auto et = edges.begin();
         for(;et != edges.end();et++){
@@ -176,6 +190,7 @@ public:
         return (double)(2 * nodes.size())/(double)(edges.size()*(edges.size()-1));
     }
 
+<<<<<<< HEAD
 
 
     ~Grapho(){}
@@ -198,6 +213,47 @@ public:
             dijkstras(et->first, node_final, weight + et->second);
         }
         auto at = nodes.begin();
+=======
+    ~Grapho(){}
+
+    void help_dijkstra(vector<Node<N,T,COOR>*> path_nodes,Node<N,T,COOR>* node_inicio, Node<N,T,COOR>* node_final, T weight){
+        if (node_inicio==node_final)
+            path_nodes.insert(node_inicio,node_final);
+        auto it= node_inicio->vecinos.begin();
+        help_dijkstra(path_nodes,(*it)->first,node_final,weight + (*it)->second);
+
+
+    }
+
+    void dijkstras(Node<N,T,COOR>* node_inicio, Node<N,T,COOR>* node_final, T weight){
+        //se halla la minima distancia
+        map<vector<Node<N,T,COOR>*>,int> paths;
+        auto et= node_inicio->vecinos.begin();
+        for(; et != node_inicio->vecinos.end(); et++){
+            vector<Node<N,T,COOR>*> paths_nodes;
+            dijkstras((*et)->first, node_final, weight + (*et)->second);
+
+            paths.insert(paths_nodes,weight);
+            weight =0;
+
+        }
+
+
+
+    }
+    //Ejemplo_2
+
+    void dijkstras(Node<N,T,COOR>* node_inicio, Node<N,T,COOR>* node_final, T weight){
+        auto elegido = node_inicio->vecinos.begin();
+        for(auto et= node_inicio->vecinos.begin(); et != node_inicio->vecinos.end(); et++) {
+            dijkstras((*et)->first, node_final, weight + (*et)->second);
+        }
+        auto at = nodes.begin();
+        for(;at!=nodes.end();at++){
+            (*at)->
+        }
+
+>>>>>>> Marlon
     }
 
     void saved (string nombre_archivo){
