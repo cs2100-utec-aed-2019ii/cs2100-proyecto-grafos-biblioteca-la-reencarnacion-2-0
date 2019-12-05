@@ -179,17 +179,23 @@ public:
 
     ~Grapho(){}
 
-    void Dijkstras(Node<N,T,COOR>* node_inicio, Node<N,T,COOR>* node_final){
-        float weight = 0;
+    void dijkstras(Node<N,T,COOR>* node_inicio, Node<N,T,COOR>* node_final){
+        T weight = 0;
         auto elegido = node_inicio->vecinos.begin();
         auto et = node_inicio->vecinos.begin();
         for(; et != node_inicio->vecinos.end(); et++)
-            if(weight < et->second){
-                weight = et->second;
-                elegido = et;
-            }
+            dijkstras(et->first, node_final, weight + et->second);
         auto at = nodes.begin();
 
+    }
+
+    void dijkstras(Node<N,T,COOR>* node_inicio, Node<N,T,COOR>* node_final, T weight){
+        auto elegido = node_inicio->vecinos.begin();
+        auto et = node_inicio->vecinos.begin();
+        for(; et != node_inicio->vecinos.end(); et++) {
+            dijkstras(et->first, node_final, weight + et->second);
+        }
+        auto at = nodes.begin();
     }
 
     void saved (string nombre_archivo){
