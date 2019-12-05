@@ -22,15 +22,15 @@ using namespace std;
 #define INT 1
 #define LETRA 2
 
-Grapho<Coordenadas, float, COOR> grafo_1("Prueba_2.txt");
+Grapho<Coordenadas, float, COOR> grafo_1("Prueba.txt");
 Grapho<Coordenadas, float, COOR> grafo_2(grafo_1);
 
 double rotacion = 0;
 double move_x = 0;
 double move_y = 0;
 int node = rand()%grafo_2.nodes.size();
-Coordenadas inicio;
-Coordenadas final;
+Node<Coordenadas, float, COOR>* inicio;
+Node<Coordenadas, float, COOR>* final;
 
 // inicializamos glut
 GLvoid initGL(){
@@ -53,12 +53,12 @@ GLvoid window_display(){
         glPushMatrix();
         glColor3f((*it)->R,(*it)->G,(*it)->B);
         glTranslatef((*it)->coordenadas.X,(*it)->coordenadas.Y,0);
-        if(grafo_2.nodes.size() < 50)
+        if(grafo_2.nodes.size() < 100)
+            glutSolidSphere(7,20,10);
+        else if(grafo_2.nodes.size() < 500)
             glutSolidSphere(5,20,10);
-        else if(grafo_2.nodes.size() < 100)
-            glutSolidSphere(3,20,10);
         else
-            glutSolidSphere(1,20,10);
+            glutSolidSphere(3,20,10);
         glPopMatrix();
     }
 
@@ -139,30 +139,29 @@ void specialKeyInput(int key, int x, int y){
             }
         int i = 0;
         auto at = grafo_2.nodes.begin();
-        for(; (*at)->coordenadas.X != elegido->first->coordenadas.X && (*at)->coordenadas.Y != elegido->first->coordenadas.Y; at++,i++);
+        for(; (*at)->coordenadas != elegido->first->coordenadas; at++,i++);
         node = i;
         (*at)->B = 0;
         (*at)->G = 0;
-        (*it)->R = 1;
+        (*at)->R = 1;
         auto ot = grafo_2.edges.begin();
         for(; ot != grafo_2.edges.end(); ot++){
-            if(((*ot)->node_1->coordenadas.X == elegido->first->coordenadas.X &&
-                (*ot)->node_2->coordenadas.X == (*it)->coordenadas.X &&
-                (*ot)->node_1->coordenadas.Y == elegido->first->coordenadas.Y &&
-                (*ot)->node_2->coordenadas.Y == (*it)->coordenadas.Y) ||
-                ((*ot)->node_1->coordenadas.X == (*it)->coordenadas.X &&
-                (*ot)->node_2->coordenadas.X == elegido->first->coordenadas.X &&
-                (*ot)->node_1->coordenadas.Y == (*it)->coordenadas.Y &&
-                (*ot)->node_2->coordenadas.Y == elegido->first->coordenadas.Y)){
+            if(((*ot)->node_1->coordenadas == elegido->first->coordenadas &&
+                (*ot)->node_2->coordenadas == (*it)->coordenadas) ||
+                ((*ot)->node_1->coordenadas == (*it)->coordenadas &&
+                (*ot)->node_2->coordenadas == elegido->first->coordenadas)){
                     (*ot)->B = 0;
                     (*ot)->G = 0;
+                    (*ot)->R = 1;
             }
         }
     }
     if(key == GLUT_KEY_RIGHT){
-        (*it)->B = 1;
-        (*it)->G = 1;
-        (*it)->R = 1;
+        if(!inicio || (inicio && inicio->coordenadas != (*it)->coordenadas) || !final ||(final && final->coordenadas != (*it)->coordenadas)){
+            (*it)->B = 1;
+            (*it)->G = 1;
+            (*it)->R = 1;
+        }
         float weight = numeric_limits<float>::max();
         auto elegido = (*it)->vecinos.begin();
         auto et = (*it)->vecinos.begin();
@@ -173,23 +172,20 @@ void specialKeyInput(int key, int x, int y){
             }
         int i = 0;
         auto at = grafo_2.nodes.begin();
-        for(; (*at)->coordenadas.X != elegido->first->coordenadas.X && (*at)->coordenadas.Y != elegido->first->coordenadas.Y; at++,i++);
+        for(; (*at)->coordenadas != elegido->first->coordenadas; at++,i++);
         node = i;
         (*at)->B = 0;
         (*at)->G = 0;
-        (*it)->R = 1;
+        (*at)->R = 1;
         auto ot = grafo_2.edges.begin();
         for(; ot != grafo_2.edges.end(); ot++){
-            if(((*ot)->node_1->coordenadas.X == elegido->first->coordenadas.X &&
-                (*ot)->node_2->coordenadas.X == (*it)->coordenadas.X &&
-                (*ot)->node_1->coordenadas.Y == elegido->first->coordenadas.Y &&
-                (*ot)->node_2->coordenadas.Y == (*it)->coordenadas.Y) ||
-               ((*ot)->node_1->coordenadas.X == (*it)->coordenadas.X &&
-                (*ot)->node_2->coordenadas.X == elegido->first->coordenadas.X &&
-                (*ot)->node_1->coordenadas.Y == (*it)->coordenadas.Y &&
-                (*ot)->node_2->coordenadas.Y == elegido->first->coordenadas.Y)){
+            if(((*ot)->node_1->coordenadas == elegido->first->coordenadas &&
+                (*ot)->node_2->coordenadas == (*it)->coordenadas) ||
+               ((*ot)->node_1->coordenadas == (*it)->coordenadas &&
+                (*ot)->node_2->coordenadas == elegido->first->coordenadas)){
                 (*ot)->B = 0;
                 (*ot)->G = 0;
+                (*ot)->R = 1;
             }
         }
     }
@@ -200,7 +196,7 @@ void mousebutton (int boton, int estado, int x, int y){
     if (boton == GLUT_LEFT_BUTTON && estado == GLUT_DOWN){
         auto it = grafo_2.nodes.begin();
         for(;it != grafo_2.nodes.end(); it++){
-            if((*it)->coordenadas.X == inicio.X && (*it)->coordenadas.Y == inicio.Y){
+            if(inicio && (*it)->coordenadas == inicio->coordenadas){
                 (*it)->B = 1;
                 (*it)->R = 1;
                 (*it)->G = 1;
@@ -209,20 +205,34 @@ void mousebutton (int boton, int estado, int x, int y){
 
         it = grafo_2.nodes.begin();
         for(;it != grafo_2.nodes.end(); it++){
-            if((*it)->coordenadas.X-3 <= x && (*it)->coordenadas.X+3 >= x && (*it)->coordenadas.Y-3 <= ALTO-y && (*it)->coordenadas.Y+3 >= ALTO-y){
-                (*it)->B = 0;
-                (*it)->R = 0;
-                (*it)->G = 1;
-                inicio.X = (*it)->coordenadas.X;
-                inicio.Y = (*it)->coordenadas.Y;
-            }
+            if(grafo_2.nodes.size() < 100)
+                if((*it)->coordenadas.X-5 <= x && (*it)->coordenadas.X+5 >= x && (*it)->coordenadas.Y-5 <= ALTO-y && (*it)->coordenadas.Y+5 >= ALTO-y){
+                    (*it)->B = 0;
+                    (*it)->R = 0;
+                    (*it)->G = 1;
+                    inicio = (*it);
+                }
+            else if(grafo_2.nodes.size() < 500)
+                if((*it)->coordenadas.X-2.5 <= x && (*it)->coordenadas.X+2.5 >= x && (*it)->coordenadas.Y-2.5 <= ALTO-y && (*it)->coordenadas.Y+2.5 >= ALTO-y){
+                    (*it)->B = 0;
+                    (*it)->R = 0;
+                    (*it)->G = 1;
+                    inicio = (*it);
+                }
+            else
+                if((*it)->coordenadas.X-1.5 <= x && (*it)->coordenadas.X+1.5 >= x && (*it)->coordenadas.Y-1.5 <= ALTO-y && (*it)->coordenadas.Y+1.5 >= ALTO-y){
+                    (*it)->B = 0;
+                    (*it)->R = 0;
+                    (*it)->G = 1;
+                    inicio = (*it);
+                }
         }
     }
 
     if (boton == GLUT_RIGHT_BUTTON && estado == GLUT_DOWN){
         auto it = grafo_2.nodes.begin();
         for(;it != grafo_2.nodes.end(); it++){
-            if((*it)->coordenadas.X == final.X && (*it)->coordenadas.Y == final.Y){
+            if(final && (*it)->coordenadas == final->coordenadas){
                 (*it)->B = 1;
                 (*it)->R = 1;
                 (*it)->G = 1;
@@ -231,13 +241,27 @@ void mousebutton (int boton, int estado, int x, int y){
 
         it = grafo_2.nodes.begin();
         for(;it != grafo_2.nodes.end(); it++){
-            if((*it)->coordenadas.X-3 <= x && (*it)->coordenadas.X+3 >= x && (*it)->coordenadas.Y-3 <= ALTO-y && (*it)->coordenadas.Y+3 >= ALTO-y){
-                (*it)->B = 0;
-                (*it)->R = 0;
-                (*it)->G = 1;
-                final.X = (*it)->coordenadas.X;
-                final.Y = (*it)->coordenadas.Y;
-            }
+            if(grafo_2.nodes.size() < 100)
+                if((*it)->coordenadas.X-5 <= x && (*it)->coordenadas.X+5 >= x && (*it)->coordenadas.Y-5 <= ALTO-y && (*it)->coordenadas.Y+5 >= ALTO-y){
+                    (*it)->B = 0;
+                    (*it)->R = 0;
+                    (*it)->G = 1;
+                    final = (*it);
+                }
+                else if(grafo_2.nodes.size() < 500)
+                    if((*it)->coordenadas.X-2.5 <= x && (*it)->coordenadas.X+2.5 >= x && (*it)->coordenadas.Y-2.5 <= ALTO-y && (*it)->coordenadas.Y+2.5 >= ALTO-y){
+                        (*it)->B = 0;
+                        (*it)->R = 0;
+                        (*it)->G = 1;
+                        final = (*it);
+                    }
+                    else
+                    if((*it)->coordenadas.X-1.5 <= x && (*it)->coordenadas.X+1.5 >= x && (*it)->coordenadas.Y-1.5 <= ALTO-y && (*it)->coordenadas.Y+1.5 >= ALTO-y){
+                        (*it)->B = 0;
+                        (*it)->R = 0;
+                        (*it)->G = 1;
+                        final = (*it);
+                    }
         }
     }
     glutPostRedisplay ();

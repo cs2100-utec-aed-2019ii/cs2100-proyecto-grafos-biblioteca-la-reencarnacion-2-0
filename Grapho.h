@@ -15,6 +15,7 @@
 #include <cmath>
 #include <queue>
 #include <list>
+#include <map>
 using namespace std;
 
 #define COOR 0
@@ -109,9 +110,9 @@ public:
                 Node<N,T,COOR>* node_2 = nodes[atoi(cadena.c_str())];
                 fe >> cadena;
                 Node<N,T,COOR>* node_3 = nodes[atoi(cadena.c_str())];
-                insert_Edge(node_1,node_2,sqrt(abs((node_1->coordenadas.X-node_2->coordenadas.X)/(node_1->coordenadas.Y-node_2->coordenadas.Y))));
-                insert_Edge(node_2,node_3,sqrt(abs((node_2->coordenadas.X-node_3->coordenadas.X)/(node_2->coordenadas.Y-node_3->coordenadas.Y))));
-                insert_Edge(node_3,node_1,sqrt(abs((node_3->coordenadas.X-node_1->coordenadas.X)/(node_3->coordenadas.Y-node_1->coordenadas.Y))));
+                insert_Edge(node_1,node_2,sqrt(pow(node_1->coordenadas.X-node_2->coordenadas.X,2)+pow(node_1->coordenadas.Y-node_2->coordenadas.Y,2)));
+                insert_Edge(node_2,node_3,sqrt(pow(node_2->coordenadas.X-node_3->coordenadas.X,2)+pow(node_2->coordenadas.Y-node_3->coordenadas.Y,2)));
+                insert_Edge(node_3,node_1,sqrt(pow(node_3->coordenadas.X-node_1->coordenadas.X,2)+pow(node_3->coordenadas.Y-node_1->coordenadas.Y,2)));
             }
         }
         fe.close();
@@ -181,15 +182,16 @@ public:
 
     void dijkstras(Node<N,T,COOR>* node_inicio, Node<N,T,COOR>* node_final){
         T weight = 0;
+        map<Node<Coordenadas, T, COOR>, T> tabla;
         auto elegido = node_inicio->vecinos.begin();
         auto et = node_inicio->vecinos.begin();
         for(; et != node_inicio->vecinos.end(); et++)
-            dijkstras(et->first, node_final, weight + et->second);
+            dijkstras(tabla, et->first, node_final, weight + et->second);
         auto at = nodes.begin();
 
     }
 
-    void dijkstras(Node<N,T,COOR>* node_inicio, Node<N,T,COOR>* node_final, T weight){
+    T dijkstras(vector<Node<Coordenadas, T, COOR>> recorrido,Node<N,T,COOR>* node_inicio, Node<N,T,COOR>* node_final, T weight){
         auto elegido = node_inicio->vecinos.begin();
         auto et = node_inicio->vecinos.begin();
         for(; et != node_inicio->vecinos.end(); et++) {

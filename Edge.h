@@ -38,9 +38,9 @@ public:
     }
     Edge(Node<Coordenadas,T,COOR>* _node_1, Node<Coordenadas,T,COOR>* _node_2, T _weight) : node_1(_node_1), node_2(_node_2), weight(_weight){
         _node_1->grade++;
-        _node_1->vecinos.insert({node_2,_weight});
+        _node_1->vecinos.insert({_node_2,_weight});
         _node_2->grade++;
-        _node_2->vecinos.insert({node_1,_weight});
+        _node_2->vecinos.insert({_node_1,_weight});
     }
     ~Edge(){}
 };
