@@ -17,6 +17,10 @@ public:
         return X == it.X and Y == it.Y;
     }
 
+    bool operator != (const Coordenadas& it) const {
+        return X != it.X or Y != it.Y;
+    }
+
     ~Coordenadas(){}
 };
 
